@@ -19,30 +19,19 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+/**
+ * Controller for the screen that adds customers to the database.
+ */
 public class AddCustomerScreenController {
     private ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
     private ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
     private CountryDao countryDao = new CountryDao();
     private DivisionDao divisionDao = new DivisionDao();
     private CustomerDao customerDao = new CustomerDao();
-    private int countryID;
     private ObservableList<Division> statesList = FXCollections.observableArrayList();
     private ObservableList<Division> canadaList = FXCollections.observableArrayList();
     private ObservableList<Division> britainList = FXCollections.observableArrayList();
-
-    Country selCountry; //= countryComboBox.getSelectionModel().getSelectedItem();
-    Division selDivision;// = stateComboBox.getSelectionModel().getSelectedItem();
-
-
-
-
-
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
+    private Division selDivision;// = stateComboBox.getSelectionModel().getSelectedItem();
 
     @FXML // fx:id="nameTxt"
     private TextField nameTxt; // Value injected by FXMLLoader
@@ -65,11 +54,21 @@ public class AddCustomerScreenController {
     @FXML // fx:id="phoneTxt"
     private TextField phoneTxt; // Value injected by FXMLLoader
 
+    /**
+     * Navigates to the customers screen.
+     * @param event The user clicks the cancel button.
+     * @throws IOException Rethrows IOException toCustomersScreen.
+     */
     @FXML
     void goToCustomersScreen(ActionEvent event) throws IOException {
         Navigation.toCustomersScreen(event);
     }
 
+    /**
+     * Saves the data in the text fields as a customer to the database.
+     * @param event When the user clicks the save button.
+     * @throws IOException Rethrows IOException toCustomersScreen.
+     */
     @FXML
     void saveCustomer(ActionEvent event) throws IOException {
         int customerID = -1;
@@ -98,49 +97,19 @@ public class AddCustomerScreenController {
         Navigation.toCustomersScreen(event);
     }
 
+    /**
+     * Sets the division observable list for the division combo box when a country is chosen.
+     * @param event When the user chooses the country.
+     */
     @FXML
     void chooseCountry(ActionEvent event) {
-        setDivisionObservableList(event);
-        //countryID = countryComboBox.getSelectionModel().getSelectedItem().getCountryID();
-        //divisionObservableList.addAll(divisionDao.selectDivisions(countryID));
-        //stateComboBox.setItems(divisionObservableList);
-        //selCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        //selDivision = stateComboBox.getSelectionModel().getSelectedItem();
-        //int selCountryID = selCountry.getCountryID();
-        //divisionObservableList = divisionDao.selectDivisionsInCountry(selCountryID);
-
-       // if(selDivision != null) {
-        //    if(divisionObservableList.contains(selDivision)){
-        //        stateComboBox.setItems(divisionObservableList);
-        //        stateComboBox.setValue(selDivision);
-        //    }else{
-        //        stateComboBox.setItems(divisionObservableList);
-        //    }
-       // }else {
-       //     if (divisionObservableList.contains()) {
-       //         setDivisionObservableList(event);
-       //     }
-       // }
+        setDivisionObservableList();
 
     }
 
-    @FXML
-    void chooseDivision(ActionEvent event) {
-        selDivision = stateComboBox.getSelectionModel().getSelectedItem();
-        //selCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        /*
-        if(countryComboBox.getSelectionModel().getSelectedItem() == null) {
-
-            if (stateComboBox.getSelectionModel().getSelectedItem().getCountryID() == 1) {
-                selCountry = countryDao.selectSingleCounty(1);
-                countryComboBox.setValue(selCountry);
-                stateComboBox.setValue(selDivision);
-            }
-        }
-         */
-
-    }
-
+    /**
+     * Sets the combo boxes for the country and division.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         statesList.addAll(divisionDao.selectDivisionsInCountry(1));
@@ -155,13 +124,13 @@ public class AddCustomerScreenController {
 
     }
 
-    public void setDivisionObservableList(ActionEvent event){
-        //ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
+    /**
+     * Sets the division observable list for the division combo box. Fills the division combo box.
+     */
+    public void setDivisionObservableList(){
         Country selCountry = countryComboBox.getSelectionModel().getSelectedItem();
         int countryID = selCountry.getCountryID();
         divisionObservableList = divisionDao.selectDivisionsInCountry(countryID); //divisionDao.selectDivisions(1);
         stateComboBox.setItems(divisionObservableList);
-        //System.out.println("Country ID: " + selCountry.getCountryID() + " | " + selCountry.getCountryName() + " | " + "Number of divisions: " + divisionObservableList.stream().count());
-
     }
 }

@@ -24,6 +24,9 @@ import utils.Validation;
 
 import javax.security.auth.callback.Callback;
 
+/**
+ * Controller for the screen that adds appointments to the database.
+ */
 public class AddAppointmentScreenController {
     private AppointmentDao appointmentDao = new AppointmentDao();
     private UserDao userDao = new UserDao();
@@ -45,7 +48,7 @@ public class AddAppointmentScreenController {
 
 
 
-        @FXML private RadioButton startAMRB;
+    @FXML private RadioButton startAMRB;
     @FXML private RadioButton startPMRB;
     @FXML private RadioButton endAMRB;
     @FXML private RadioButton endPMRB;
@@ -106,15 +109,12 @@ public class AddAppointmentScreenController {
         Navigation.toMainScreen(event);
     }
 
-    @FXML
-    void onAM(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onPM(ActionEvent event) throws IOException {
-    }
-
+    /**
+     * Saves the data in the text fields as an appointment in the database. Calls the validation methods to ensure the appointment is acceptable.
+     * @param event User clicks the save button.
+     * @throws IOException Rethrows IOException when switching screens Navigation.toMainScreen(event);
+     * @throws SQLException Rethrows SQLException selectSingleCustomer, selectSingleUser, insert.
+     */
     @FXML //Save appointment button
     void onSave(ActionEvent event) throws IOException, SQLException {
         try {
@@ -141,8 +141,8 @@ public class AddAppointmentScreenController {
             String lastUpdatedBy = User.getCurrentUser().getUserName();
 
             //SELECT single customer from customerID
-            Customer customer = customerDao.selectSingleCustomer(customerID);
-            User userObj = userDao.selectSingleUser(userID);
+            Customer customer = CustomerDao.selectSingleCustomer(customerID);
+            User userObj = UserDao.selectSingleUser(userID);
 
             int selStartHr;
             int selEndHr;
@@ -190,79 +190,28 @@ public class AddAppointmentScreenController {
                 Navigation.toMainScreen(event);
             }
 
-            /*  Time validation
-            if(endEST.isBefore(startEST)){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("End time must be after start time");
-                alert.show();
-            }else if(((startEST.getHour() >= 8 && startEST.getHour() <= 22) && (endEST.getHour() >= 8 && endEST.getHour() <=22) )){
-                Appointment appointment = new Appointment(appointmentID, title, description, location, type, LocalDateTime.of(startDate, startTime), end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, user, contact, startLocal, end.atZone(ZoneId.systemDefault()), customer);
-                appointmentDao.insert(appointment);
-                Navigation.toMainScreen(event);
-
-            }else{
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Time not within operating hours.");
-                alert.show();
-            }
-            */
-
-            /*
-            if((startTime.isBefore(closedZ) && startTime.isAfter(openZ)) && (endTime.isAfter(openZ) && endTime.isBefore(closedZ))) {
-                Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, user, contact, start.atZone(ZoneId.systemDefault()), end.atZone(ZoneId.systemDefault()), customer);
-                appointmentDao.insert(appointment);
-                Navigation.toMainScreen(event);
-
-            }else{
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Time not within operating hours.");
-                alert.show();
-            }
-             */
-
-
-
         } catch (NullPointerException nullPointerException){
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "All fields are required");
             Optional<ButtonType> result = alert.showAndWait();
         }
-
-
-        /*
-                Connection conn = DBConnection.startConnection(); //Connect to database
-
-        String insertStatement = "INSERT INTO appointments (Title, Description, Location, Contact_ID, Type, Start, End, Customer_ID, User_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
-        DBQuery.setPreparedStatement(conn, insertStatement); //Create prepared statement
-        PreparedStatement ps = DBQuery.getPreparedStatement();
-        ps.setString(1, title);
-        ps.setString(2, description);
-        ps.setString(3, location);
-        ps.setInt(4, contact);
-        ps.setString(5, type);
-        ps.setTimestamp(6, start);
-        ps.setTimestamp(7, end);
-        ps.setInt(8, customer);
-        ps.setInt(9, user);
-
-        //Execute SQL Statement
-        ps.execute();
-
-         */
-
     }
 
+    /**
+     * Sets the end date to be the same as the start date.
+     * @param event The user chooses the start date.
+     */
     @FXML
     void setDate(ActionEvent event) {
         endDatePicker.setValue(startDatePicker.getValue());
     }
 
+    /**
+     * Sets the local time zone, sets the combo boxes when the screen is opened.
+     * @throws SQLException Rethrows SQLException selectContacts, selectAllUsers.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() throws SQLException {
         localZone = ZoneId.systemDefault();
-        System.out.println(User.getCurrentUser().getUserName());
-        //System.out.println(localZone);
-
 
         int startHour = 1;
         int endHour = 12;
