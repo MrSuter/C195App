@@ -24,35 +24,11 @@ import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
 import model.Appointment;
 
+/**
+ * Controller for the reports screen.
+ */
 public class ReportsScreenController {
 
-    private int planningQuantity;
-    private int deBriefingQuantity;
-    private int lunchQuantity;
-
-    public int getPlanningQuantity() {
-        return planningQuantity;
-    }
-
-    public void setPlanningQuantity(int planningQuantity) {
-        this.planningQuantity = planningQuantity;
-    }
-
-    public int getDeBriefingQuantity() {
-        return deBriefingQuantity;
-    }
-
-    public void setDeBriefingQuantity(int deBriefingQuantity) {
-        this.deBriefingQuantity = deBriefingQuantity;
-    }
-
-    public int getLunchQuantity() {
-        return lunchQuantity;
-    }
-
-    public void setLunchQuantity(int lunchQuantity) {
-        this.lunchQuantity = lunchQuantity;
-    }
     TotalAppointmentReportController totalAppointmentReportController = new TotalAppointmentReportController();
     AppointmentDao appointmentDao = new AppointmentDao();
     ObservableList<Object> allAppointmentsList = appointmentDao.getAllRecords();
@@ -74,21 +50,33 @@ public class ReportsScreenController {
     ObservableList<Appointment> novMonthList = FXCollections.observableArrayList();
     ObservableList<Appointment> decMonthList = FXCollections.observableArrayList();
 
-
+    /**
+     * Navigates to the main screen. Calls the navigation method.
+     * @param event When the user clicks the back button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML // Back to main screen button
     void goToMainScreen(ActionEvent event) throws IOException {
         Navigation.toMainScreen(event);
     }
 
+    /**
+     * Navigates to the user schedule report.
+     * @param event When the user clicks the user report button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML
     void goToUserSchedule(ActionEvent event) throws IOException {
         Navigation.toUserScheduleReport(event);
     }
 
+    /**
+     * Navigates to the total appointments screen and sorts the appointments into the appropriate lists to give a count for each list.
+     * @param event When the user clicks the total report button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML //Total number of customer appointments by type and month
     void showTotalAppointments(ActionEvent event) throws IOException {
-        LocalDate currentDate = LocalDate.now();
-        Month currentMonth = currentDate.getMonth();
 
         for(Object o : allAppointmentsList){
             Appointment a = (Appointment) o;
@@ -132,13 +120,6 @@ public class ReportsScreenController {
 
         }
 
-        //long current = currentMonthList.stream().count();
-
-        System.out.println("Planning sessions: " + planningSessionAppointments.stream().count());
-        System.out.println("De-Briefing sessions: " + deBriefingAppointments.stream().count());
-        System.out.println("Lunch sessions: " + lunchAppointments.stream().count());
-        //System.out.print(currentMonth + " appointments "); System.out.println(current);
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/TotalAppointmentReport.fxml"));
         loader.load();
@@ -146,20 +127,7 @@ public class ReportsScreenController {
         totalAppointmentReportController.setDeBriefingQuantity((int) deBriefingAppointments.stream().count());
         totalAppointmentReportController.setLunchQuantity((int) lunchAppointments.stream().count());
         totalAppointmentReportController.setPlanningQuantity((int) planningSessionAppointments.stream().count());
-/*
-        totalAppointmentReportController.setMonth0(String.valueOf(currentMonth));
-        totalAppointmentReportController.setMonth1(String.valueOf(currentMonth.plus(1)));
-        totalAppointmentReportController.setMonth2(String.valueOf(currentMonth.plus(2)));
-        totalAppointmentReportController.setMonth3(String.valueOf(currentMonth.plus(3)));
-        totalAppointmentReportController.setMonth4(String.valueOf(currentMonth.plus(4)));
-        totalAppointmentReportController.setMonth5(String.valueOf(currentMonth.plus(5)));
-        totalAppointmentReportController.setMonth6(String.valueOf(currentMonth.plus(6)));
-        totalAppointmentReportController.setMonth7(String.valueOf(currentMonth.plus(7)));
-        totalAppointmentReportController.setMonth8(String.valueOf(currentMonth.plus(8)));
-        totalAppointmentReportController.setMonth9(String.valueOf(currentMonth.plus(9)));
-        totalAppointmentReportController.setMonth10(String.valueOf(currentMonth.plus(10)));
-        totalAppointmentReportController.setMonth11(String.valueOf(currentMonth.plus(11)));
-*/
+
         totalAppointmentReportController.setMonth0Qty((int) janMonthList.stream().count());
         totalAppointmentReportController.setMonth1Qty((int) febMonthList.stream().count());
         totalAppointmentReportController.setMonth2Qty((int) marMonthList.stream().count());
@@ -177,19 +145,16 @@ public class ReportsScreenController {
         Parent scene = loader.getRoot();
         stage.setScene(new Scene(scene));
         stage.show();
-
-
-
-
     }
 
+    /**
+     * Navigates to the contact schedule screen by calling the navigation method.
+     * @param event When the user clicks the contact schedule button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML // Individual Contact schedule report. include appointment ID, title, type, description, start date and time, end date and time, and customer ID
     void showContactSchedule(ActionEvent event) throws IOException {
         Navigation.toContactScheduleReportScreen(event);
     }
 
-    @FXML // This method is called by the FXMLLoader when initialization is complete
-    void initialize() {
-
-    }
 }

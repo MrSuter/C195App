@@ -1,16 +1,15 @@
 package controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
 import java.time.*;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import dao.AppointmentDao;
 import dao.CustomerDao;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -23,9 +22,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
-import model.Customer;
-import model.User;
 
+/**
+ * Controller for the main screen. Shows the appointment schedule and allows navigation to the rest of the application.
+ */
 public class MainScreenController {
     private LocalDateTime today = LocalDateTime.now();
     private ObservableList<Appointment> monthAppointmentsList = FXCollections.observableArrayList();
@@ -39,17 +39,6 @@ public class MainScreenController {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a zzz");
     private ZonedDateTime nowZdt = ZonedDateTime.now().withZoneSameInstant(ZoneId.systemDefault());
 
-
-
-//new EditAppointmentScreenController();
-
-
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
 
     @FXML
     private RadioButton allAppointments;
@@ -96,6 +85,11 @@ public class MainScreenController {
     @FXML
     private TableColumn<Appointment, Integer> colUserID;
 
+    /**
+     * Deletes the selected appointment from the database.
+     * @param event User clicks the delete button.
+     * @throws SQLException Rethrows SQLException when executing the delete query.
+     */
     @FXML
     void deleteAppointment(ActionEvent event) throws SQLException {
         Appointment selAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
@@ -118,6 +112,11 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Updates the selected appointment from the database.
+     * @param event User clicks the edit button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML
     void editAppointment(ActionEvent event) throws IOException {
         if(appointmentsTableView.getSelectionModel().getSelectedItem() != null) {
@@ -126,20 +125,10 @@ public class MainScreenController {
             loader.load();
 
             editAppointmentScreenController = loader.getController();
-            //editAppointmentScreenController.setTitleTxt("Maybe...");
 
             Appointment selAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
             editAppointmentScreenController.setEditAppointment(selAppt);
-            //editAppointmentScreenController.setTitleTxt(selAppt.getTitle());
-            //System.out.println("Start after pushing edit button: " + selAppt.getZdtStart());
 
-            //editAppointmentScreenController.setTitleTxt("selAppt.getTitle()");
-
-            //selAppt.setTitle(selAppt.getTitle());
-
-
-            //editAppointmentScreenController.populateFields(modify);
-            //Navigation.toEditAppointmentScreen(event);
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
             Parent scene = loader.getRoot();
             stage.setScene(new Scene(scene));
@@ -147,37 +136,68 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Exits the program.
+     * @param event When the user clicks the exit button.
+     */
     @FXML
     void exitProgram(ActionEvent event) {
         System.exit(0);
     }
 
+    /**
+     * Navigates to the add appointment screen.
+     * @param event When the user clicks the add button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML
     void goToAddAppointment(ActionEvent event) throws IOException {
         Navigation.toAddAppointmentScreen(event);
     }
 
+    /**
+     * Navigates to the customers screen.
+     * @param event When the user clicks the customers button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML
     void goToCustomers(ActionEvent event) throws IOException {
         Navigation.toCustomersScreen(event);
     }
 
+    /**
+     * Navigates to the reports screen.
+     * @param event When the user clicks the reports button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML // Reports button
     void goToReports(ActionEvent event) throws IOException {
         Navigation.toReportsScreen(event);
     }
 
+    /**
+     * Navigates to the login screen. Effectively logging out the current user.
+     * @param event When the user clicks the logout button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML //Logout button
     void goToLoginScreen(ActionEvent event) throws IOException {
         Navigation.toLoginScreen(event);
     }
 
+    /**
+     * Displays all the appointments from the database.
+     */
     @FXML
     void showAllAppointments() {
         appointmentsTableView.getItems().clear();
         appointmentsTableView.getItems().addAll(allAppointmentsList);
     }
 
+    /**
+     * Displays the appointments for the current month in the table.
+     * @param event When the user clicks the month radio button.
+     */
     @FXML //Month radio
     void sortByMonth(ActionEvent event) {
         appointmentsTableView.getItems().clear();
@@ -193,6 +213,10 @@ public class MainScreenController {
         appointmentsTableView.getItems().addAll(monthAppointmentsList);
     }
 
+    /**
+     * Displays the current week's appointments from Sunday to Saturday.
+     * @param event When the user clicks the week radio button.
+     */
     @FXML //Week radio
     void sortByWeek(ActionEvent event) {
         appointmentsTableView.getItems().clear();
@@ -244,9 +268,12 @@ public class MainScreenController {
     }
 
 
-
+    /**
+     * Sets the appointments table when the screen is loaded. Alerts the user if there is an upcoming appointment.
+     * LAMBDA: This lambda sets the table columns and makes the code easy to read. It also utilizes the multi-core cpus.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
-    void initialize() throws SQLException {
+    void initialize() {
 
         this.colDescription.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getDescription()));
         this.colAppointmentID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentID()));
@@ -262,6 +289,8 @@ public class MainScreenController {
 
         if(allAppointments.isSelected()){
             setTableView(setAllAppointmentsList(objects));
+        } else if (weekAppointments.isSelected()){
+            setTableView(setWeeksAppointments(weekAppointmentsList));
         }
 
         //15 minute alert feature
@@ -289,6 +318,11 @@ public class MainScreenController {
 
     }
 
+    /**
+     * Sets all appointments from the database to the allAppointmentsList.
+     * @param objects The appointment objects to be added to the allAppointmentsList.
+     * @return The allAppointmentsList of appointment objects.
+     */
     private ObservableList<Appointment> setAllAppointmentsList(ObservableList<Object> objects){
         allAppointmentsList.clear();
         for (Object o : objects) {
@@ -302,18 +336,28 @@ public class MainScreenController {
         }
         return allAppointmentsList;
     }
+
+    /**
+     * Sets the tableview with the list in the parameter.
+     * @param appointments List of appointments to be added to the tableview.
+     */
     private void setTableView(ObservableList<Appointment> appointments){
         appointmentsTableView.getItems().addAll(appointments);
-        //appointments.forEach(str -> System.out.println(str)); //lambda test
 
     }
-    private ObservableList<Appointment> setWeeksAppointments(ObservableList<Object> objects){
+
+    /**
+     * Sorts the list of all appointments and returns only the appointments in the current week. Prepares the list to be added to the tableview.
+     * @param objects The appointment objects to be sorted and put into the current week list.
+     * @return The list of appointments in the current week.
+     */
+    private ObservableList<Appointment> setWeeksAppointments(ObservableList<Appointment> objects){
         weekAppointmentsList.clear();
         LocalDateTime endOfWeek = LocalDateTime.of(1989, 10, 16, 0, 0);
         LocalDateTime startOfWeek = LocalDateTime.of(1988, 3, 13, 0, 0);
 
-        for(Object o : objects) {
-            Appointment a = (Appointment) o;
+        for(Appointment o : objects) {
+            Appointment a = o;
             LocalDateTime start = a.getStart();
             ZonedDateTime startUTC = start.atZone(ZoneId.of("UTC"));
             ZonedDateTime startSysDef = startUTC.withZoneSameInstant(ZoneId.systemDefault());
@@ -361,27 +405,6 @@ public class MainScreenController {
         }
         return weekAppointmentsList;
     }
-//set appointments as objects, cast them to appointments, then set the tableview
-    private void setAppointmentsTableView(ObservableList<Object> objects){
-        ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-
-        for (Object o : objects) {
-            Appointment a = (Appointment) o;
-
-            LocalDateTime start = a.getStart();
-            start = Navigation.utcTimeToLocal(start);
-            a.setStart(start);
-
-            LocalDateTime end = a.getEnd();
-            end = Navigation.utcTimeToLocal(end);
-            a.setEnd(end);
-
-            appointmentList.add(a);
-        }
-        appointmentsTableView.setItems(appointmentList);//getItems().addAll(appointmentList);
-        appointmentList.forEach(str -> System.out.println(str));
-    }
-
 
 
 }

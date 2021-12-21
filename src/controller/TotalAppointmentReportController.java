@@ -7,6 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * Controller for the total appointment report screen.
+ */
 public class TotalAppointmentReportController {
 
     private int planningQuantity;
@@ -39,6 +42,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth0Qty() {        return month0Qty;    }
 
+    /**
+     * Set the number of appointments in January.
+     * @param month0Qty Integer of the number of appointments in January.
+     */
     public void setMonth0Qty(int month0Qty) {
         this.month0Qty = month0Qty;
         month0QtyLbl.setText(String.valueOf(month0Qty));
@@ -46,6 +53,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth1Qty() {        return month1Qty;    }
 
+    /**
+     * Set the number of appointments in February.
+     * @param month1Qty Integer of the number of appointments in February.
+     */
     public void setMonth1Qty(int month1Qty) {
         this.month1Qty = month1Qty;
         month1QtyLbl.setText(String.valueOf(month1Qty));
@@ -53,6 +64,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth2Qty() {        return month2Qty;    }
 
+    /**
+     * Set the number of appointments in March.
+     * @param month2Qty Integer of the number of appointments in March.
+     */
     public void setMonth2Qty(int month2Qty) {
         this.month2Qty = month2Qty;
         month2QtyLbl.setText(String.valueOf(month2Qty));
@@ -60,6 +75,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth3Qty() {        return month3Qty;    }
 
+    /**
+     * Set the number of appointments in April.
+     * @param month3Qty Integer of the number of appointments in April.
+     */
     public void setMonth3Qty(int month3Qty) {
         this.month3Qty = month3Qty;
         month3QtyLbl.setText(String.valueOf(month3Qty));
@@ -67,6 +86,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth4Qty() {        return month4Qty;    }
 
+    /**
+     * Set the number of appointments in May.
+     * @param month4Qty Integer of the number of appointments in May.
+     */
     public void setMonth4Qty(int month4Qty) {
         this.month4Qty = month4Qty;
         month4QtyLbl.setText(String.valueOf(month4Qty));
@@ -74,6 +97,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth5Qty() {        return month5Qty;    }
 
+    /**
+     * Set the number of appointments in June.
+     * @param month5Qty Integer of the number of appointments in June.
+     */
     public void setMonth5Qty(int month5Qty) {
         this.month5Qty = month5Qty;
         month5QtyLbl.setText(String.valueOf(month5Qty));
@@ -81,6 +108,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth6Qty() {        return month6Qty;    }
 
+    /**
+     * Set the number of appointments in July.
+     * @param month6Qty Integer of the number of appointments in July.
+     */
     public void setMonth6Qty(int month6Qty) {
         this.month6Qty = month6Qty;
         month6QtyLbl.setText(String.valueOf(month6Qty));
@@ -88,6 +119,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth7Qty() {return month7Qty;}
 
+    /**
+     * Set the number of appointments in August.
+     * @param month7Qty Integer of the number of appointments in August.
+     */
     public void setMonth7Qty(int month7Qty) {
         this.month7Qty = month7Qty;
         month7QtyLbl.setText(String.valueOf(month7Qty));
@@ -95,6 +130,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth8Qty() {   return month8Qty;  }
 
+    /**
+     * Set the number of appointments in September.
+     * @param month8Qty Integer of the number of appointments in September.
+     */
     public void setMonth8Qty(int month8Qty) {
         this.month8Qty = month8Qty;
         month8QtyLbl.setText(String.valueOf(month8Qty));
@@ -102,6 +141,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth9Qty() {        return month9Qty;    }
 
+    /**
+     * Set the number of appointments in October.
+     * @param month9Qty Integer of the number of appointments in October.
+     */
     public void setMonth9Qty(int month9Qty) {
         this.month9Qty = month9Qty;
         month9QtyLbl.setText(String.valueOf(month9Qty));
@@ -109,6 +152,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth10Qty() {        return month10Qty;    }
 
+    /**
+     * Set the number of appointments in November.
+     * @param month10Qty Integer of the number of appointments in November.
+     */
     public void setMonth10Qty(int month10Qty) {
         this.month10Qty = month10Qty;
         month10QtyLbl.setText(String.valueOf(month10Qty));
@@ -116,6 +163,10 @@ public class TotalAppointmentReportController {
 
     //public int getMonth11Qty() {        return month11Qty;    }
 
+    /**
+     * Set the number of appointments in December.
+     * @param month11Qty Integer of the number of appointments in December.
+     */
     public void setMonth11Qty(int month11Qty) {
         this.month11Qty = month11Qty;
         month11QtyLbl.setText(String.valueOf(month11Qty));
@@ -123,7 +174,10 @@ public class TotalAppointmentReportController {
 
     //public String getMonth0() {        return month0;    }
 
-
+    /**
+     * Sets the number of appointments that are planning appointments.
+     * @param planningQuantity The number of appointments of type planning.
+     */
     public void setPlanningQuantity(int planningQuantity) {
         this.planningQuantity = planningQuantity;
         planningLbl.setText(String.valueOf(planningQuantity));
@@ -131,6 +185,10 @@ public class TotalAppointmentReportController {
 
     //public int getDeBriefingQuantity() {        return deBriefingQuantity;    }
 
+    /**
+     * Sets the number of appointments that are debriefing appointments.
+     * @param deBriefingQuantity The number of appointments of type debriefing.
+     */
     public void setDeBriefingQuantity(int deBriefingQuantity) {
         this.deBriefingQuantity = deBriefingQuantity;
         deBriefingLbl.setText(String.valueOf(deBriefingQuantity));
@@ -138,6 +196,10 @@ public class TotalAppointmentReportController {
 
     //public int getLunchQuantity() {        return lunchQuantity;    }
 
+    /**
+     * Sets the number of appointments that are lunch appointments.
+     * @param lunchQuantity The number of appointments of type lunch.
+     */
     public void setLunchQuantity(int lunchQuantity) {
         this.lunchQuantity = lunchQuantity;
         lunchLbl.setText(String.valueOf(lunchQuantity));
@@ -224,12 +286,19 @@ public class TotalAppointmentReportController {
     @FXML
     private Label lunchLbl;
 
+    /**
+     * Navigates to the reports screen by calling the navigation method.
+     * @param event When the user clicks the back button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     */
     @FXML
     void toReports(ActionEvent event) throws IOException {
         Navigation.toReportsScreen(event);
     }
 
-
+    /**
+     * Sets the month labels when the screen is opened.
+     */
     @FXML
     void initialize() {
 

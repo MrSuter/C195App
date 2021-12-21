@@ -20,6 +20,9 @@ import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The controller for the user schedule report.
+ */
 public class UserScheduleReportController {
     private ObservableList<User> allUserList = FXCollections.observableArrayList();
     private ObservableList<Appointment> userScheduleList = FXCollections.observableArrayList();
@@ -55,12 +58,21 @@ public class UserScheduleReportController {
     @FXML
     private TableColumn<Appointment, String> colCustomerID;
 
+    /**
+     * Navigates to the main screen by calling the navigation method.
+     * @param event When the user clicks the back button.
+     * @throws IOException Rethrows IOException when the next screen is loaded.
+     */
     @FXML
     void goToMainScreen(ActionEvent event) throws IOException {
         Navigation.toMainScreen(event);
 
     }
 
+    /**
+     * Sets the user appointment tableview after choosing which user's schedule to display.
+     * @param event When the user chooses a user from the list in the combo box.
+     */
     @FXML
     void selectUser(ActionEvent event) {
         contactScheduleTableview.getItems().clear();
@@ -79,6 +91,10 @@ public class UserScheduleReportController {
         contactScheduleTableview.getItems().addAll(userScheduleList);
     }
 
+    /**
+     * Adds the user list to the combo box when the screen is loaded.
+     * @throws SQLException Rethrows SQLException when the query is executed.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() throws SQLException {
 
