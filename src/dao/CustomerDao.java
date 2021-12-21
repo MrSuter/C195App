@@ -18,13 +18,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-
+/**
+ * Dao for the customer database operations.
+ */
 public class CustomerDao {
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private static Connection conn = DBConnection.getConnnection();
     private DivisionDao divisionDao= new DivisionDao();
 
+    /**
+     * Returns the list of customer records from the database.
+     * @return List of customer objects from the database.
+     */
     public ObservableList<Customer> selectCustomers(){
         String customerSelectStatement= "SELECT first_level_divisions.Division, customers.* FROM first_level_divisions RIGHT JOIN customers ON first_level_divisions.Division_ID = customers.Division_ID;";
         try {
@@ -55,6 +61,12 @@ public class CustomerDao {
 
         return customerList;
     }
+
+    /**
+     * Inserts a customer record into the database.
+      * @param o Object of the customer to be added to the database.
+     * @throws SQLException Rethrows SQLException when the query is executed.
+     */
     public void insertCustomer(Object o) throws SQLException {
         Customer customer = (Customer) o;
         //, name, address, postalCode, phone, createDate, createdBy, lastUpdateTime, lastUpdatedBy, divisionID
@@ -65,7 +77,6 @@ public class CustomerDao {
         String phone = customer.getPhone();
         Timestamp createDate = customer.getCreateDate();
         String createdBy = customer.getCreatedBy();
-        Timestamp lastUpdateTime = customer.getLastUpdateTime();
         String lastUpdatedBy = customer.getLastUpdatedBy();
         int divisionID = customer.getDivisionID();
         String insertStatement = "INSERT INTO customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Updated_By, Division_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -82,6 +93,10 @@ public class CustomerDao {
         ps.execute();
     }
 
+    /**
+     * Removes a customer record from the database.
+     * @param customerID Integer ID of the customer to be removed.
+     */
     public void deleteCustomer(int customerID) {
         try {
             String deleteStatement = "DELETE FROM customers WHERE Customer_ID = ?;";
@@ -96,39 +111,10 @@ public class CustomerDao {
         }
     }
 
-    public void updateCustomer(Object o){
-        Customer customer = (Customer) o;
-        int customerID = customer.getCustomerID();
-        String name = customer.getName();
-        String address = customer.getAddress();
-        String postalCode = customer.getPostalCode();
-        String phone = customer.getPhone();
-        //Timestamp createDate = customer.getCreateDate();
-        //String createdBy = customer.getCreatedBy();
-        Timestamp lastUpdateTime = customer.getLastUpdateTime();
-        String lastUpdatedBy = customer.getLastUpdatedBy();
-        int divisionID = customer.getDivisionID();
-        //String divisionName = customer.getDivisionName();
-
-        String updateString = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ?;";
-        try {
-            DBQuery.setPreparedStatement(conn, updateString);
-            PreparedStatement ps = DBQuery.getPreparedStatement();
-            ps.setString(1, name);
-            ps.setString(2, address);
-            ps.setString(3, postalCode);
-            ps.setString(4, phone);
-            ps.setTimestamp(5, lastUpdateTime);
-            ps.setString(6, lastUpdatedBy);
-            ps.setInt(7, divisionID);
-            ps.execute();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-    }
-
+    /**
+     * Updates a customer record in the database.
+     * @param o Object of the customer that needs to be updated.
+     */
     public void update(Object o){
         String update = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = ?, Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?;";
         Customer customer = (Customer) o;
@@ -156,9 +142,13 @@ public class CustomerDao {
             throwables.printStackTrace();
         }
     }
-/*
 
- */
+    /**
+     * Returns a single customer record from the database.
+     * @param ID Integer ID of the customer record to be retrieved.
+     * @return Customer object from the database.
+     * @throws SQLException Rethrows SQLException when executing the select statement.
+     */
     public static Customer selectSingleCustomer(int ID) throws SQLException {
         Customer customer = new Customer(-1, "Anita", "home", "45877", "", Timestamp.valueOf(LocalDateTime.now()), "The Creater", Timestamp.valueOf(LocalDateTime.now()), "Daddy", -1, "Suter");
         String select = "SELECT * FROM customers WHERE Customer_ID = ?";

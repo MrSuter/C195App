@@ -10,9 +10,16 @@ import utils.DBQuery;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * Dao for the division database operations.
+ */
 public class DivisionDao {
     private static Connection conn = DBConnection.getConnnection();
 
+    /**
+     * Returns all of the division records from the database.
+     * @return List of all of the divisions.
+     */
     public  ObservableList<Division> selectAllDivisions(){
         ObservableList<Division> allDivisionsList = FXCollections.observableArrayList();
         String selectDivisions = "SELECT * FROM first_level_divisions;";
@@ -41,6 +48,11 @@ public class DivisionDao {
         return allDivisionsList;
     }
 
+    /**
+     * Returns the divisions in the country of the ID parameter.
+     * @param countryIDInput Integer ID for the country to select its divisions.
+     * @return List of divisions within the selected country.
+     */
     public ObservableList<Division> selectDivisionsInCountry(int countryIDInput){
         ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
         String selectDivision = "SELECT * FROM first_level_divisions WHERE COUNTRY_ID = ?";
@@ -70,6 +82,11 @@ public class DivisionDao {
         return  divisionObservableList;
     }
 
+    /**
+     * Returns a single division from the database.
+     * @param ID Integer ID of the division to be retrieved.
+     * @return Divion object retrieved from the database.
+     */
     public static Division selectSingleDivision(int ID){
         Division division = new Division(1, "null", Timestamp.valueOf(LocalDateTime.now()), "null", Timestamp.valueOf(LocalDateTime.now()), "Null", -1);
         try {
@@ -80,7 +97,6 @@ public class DivisionDao {
             ps.execute();
 
             ResultSet rs = ps.getResultSet();
-//int divisionID, String division, Timestamp createDate, String createdBy, Timestamp lastUpdate, String lastUpdatedBy, int countryID)
             while(rs.next()) {
                 int divisionID = rs.getInt("Division_ID");
                 String divisionName = rs.getString("Division");
@@ -96,10 +112,6 @@ public class DivisionDao {
             throwables.printStackTrace();
         }
         return division;
-    }
-
-    public void update(Customer customer){
-
     }
 
 }

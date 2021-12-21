@@ -11,6 +11,9 @@ import utils.DBQuery;
 import java.sql.*;
 import java.time.*;
 
+/**
+ * Dao for the appointments in the database.
+ */
 public class AppointmentDao implements ScheduleAppDAO{
 
     private static Connection conn = DBConnection.getConnnection();
@@ -22,12 +25,8 @@ public class AppointmentDao implements ScheduleAppDAO{
     private String location;
     private int contact;
     private String type;
-    private Timestamp start;
-    private Timestamp end;
     private int customer;
     private int userID;
-    private CustomerDao customerDao = new CustomerDao();
-    private UserDao userDao = new UserDao();
     private String createdBy;
     private String lastUpdatedBy;
     private Timestamp createDate;
@@ -37,7 +36,10 @@ public class AppointmentDao implements ScheduleAppDAO{
     private User user;
 
 
-
+    /**
+     * Updates the appointment in the database.
+     * @param o The object to be updated.
+     */
     public void update(Object o){
         try {
             String updateStatement = "UPDATE client_schedule.appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ?, Last_Update = now(), Last_Updated_By = ? WHERE Appointment_ID = ?";
@@ -48,26 +50,13 @@ public class AppointmentDao implements ScheduleAppDAO{
             type = appointment.getType();
             contact = appointment.getContactID();
             createdBy = appointment.getCreatedBy();
-            lastUpdatedBy = User.getCurrentUser().getUserName();//"insert user here";
-
-            LocalDateTime start; // = appointment.getStart();
-            LocalDateTime end; // = appointment.getEnd();
-            ZonedDateTime startEST = appointment.getZdtStart(); // startSysDef = start.atZone(ZoneId.systemDefault());
-            //ZonedDateTime startUTC = startSysDef.withZoneSameInstant(ZoneId.of("UTC"));
-            start = startEST.toLocalDateTime();
-            //ZonedDateTime endSysDef = end.atZone(ZoneId.systemDefault());
-            ZonedDateTime endEST = appointment.getZdtEnd(); //endUTC = endSysDef.withZoneSameInstant(ZoneId.of("UTC"));
-            end = endEST.toLocalDateTime();
-            /*
+            lastUpdatedBy = User.getCurrentUser().getUserName();
             LocalDateTime start;
-        LocalDateTime end = appointment.getEnd();
-        ZonedDateTime startEST = appointment.getZdtStart();//start.atZone(ZoneId.systemDefault());
-        //ZonedDateTime startUTC = startSysDef.withZoneSameInstant(ZoneId.of("UTC"));
-        start = startEST.toLocalDateTime();
-        ZonedDateTime endEST = appointment.getZdtEnd();//ZonedDateTime endSysDef = end.atZone(ZoneId.systemDefault());
-        //ZonedDateTime endUTC = endSysDef.withZoneSameInstant(ZoneId.of("UTC"));
-        end = endEST.toLocalDateTime();
-             */
+            LocalDateTime end;
+            ZonedDateTime startEST = appointment.getZdtStart();
+            start = startEST.toLocalDateTime();
+            ZonedDateTime endEST = appointment.getZdtEnd();
+            end = endEST.toLocalDateTime();
 
             customer = appointment.getCustomerID();
             userID = appointment.getUserID();
@@ -95,10 +84,19 @@ public class AppointmentDao implements ScheduleAppDAO{
         }
     }
 
+    /**
+     * Returns an appointment record from the database.
+     * @param i Integer ID of the record to be retrieved.
+     * @return The object of the appointment to be retrieved.
+     */
     public Object getRecord(int i){
         return object;
     }
 
+    /**
+     * Returns a list of all of the appointments in the database.
+     * @return The list of appointments in the database.
+     */
     public ObservableList<Object> getAllRecords() {
         appointments.clear();
         objects.clear();
@@ -135,16 +133,15 @@ public class AppointmentDao implements ScheduleAppDAO{
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                ZoneId zoneId = ZoneId.systemDefault();
                 ZonedDateTime zdtStart = start.atZone(ZoneId.of("America/New_York"));
                 ZonedDateTime zdtEnd = end.atZone(ZoneId.of("America/New_York"));
-                Customer customer = customerDao.selectSingleCustomer(customerID);
-                User user = userDao.selectSingleUser(userID);
+                Customer customer = CustomerDao.selectSingleCustomer(customerID);
+                User user = UserDao.selectSingleUser(userID);
 
                 Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contactID, zdtStart, zdtEnd, customer, user);
 
-                this.appointments.add(appointment); //add appointments in observable list
-                this.objects.add(appointment);
+                appointments.add(appointment); //add appointments in observable list
+                objects.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -154,7 +151,11 @@ public class AppointmentDao implements ScheduleAppDAO{
         return objects;
     }
 
-
+    /**
+     * Removes an appointment record from the database.
+     * @param ID Integer ID of the appointment to be removed.
+     * @throws SQLException Rethrows SQLException when the delete query is executed.
+     */
     public void delete(int ID) throws SQLException {
         String deleteStatement = "DELETE FROM client_schedule.appointments WHERE Appointment_ID = ?";
         DBQuery.setPreparedStatement(conn, deleteStatement); //Create prepared statement
@@ -163,6 +164,11 @@ public class AppointmentDao implements ScheduleAppDAO{
         ps.execute();
     }
 
+    /**
+     * Inserts an appointment record into the database.
+     * @param o The object of the appointment to be inserted into the database.
+     * @throws SQLException Rethrows SQLException when the insert query is executed.
+     */
     public void insert(Object o) throws SQLException { //String title, String description, String location, int contact, String type, Timestamp start, Timestamp end, int customer, int user) throws SQLException {
         Appointment appointment = (Appointment) o;
         title = appointment.getTitle();
@@ -171,12 +177,10 @@ public class AppointmentDao implements ScheduleAppDAO{
         contact = appointment.getContactID();
         type = appointment.getType();
         LocalDateTime start;
-        LocalDateTime end = appointment.getEnd();
-        ZonedDateTime startEST = appointment.getZdtStart();//start.atZone(ZoneId.systemDefault());
-        //ZonedDateTime startUTC = startSysDef.withZoneSameInstant(ZoneId.of("UTC"));
+        LocalDateTime end;
+        ZonedDateTime startEST = appointment.getZdtStart();
         start = startEST.toLocalDateTime();
-        ZonedDateTime endEST = appointment.getZdtEnd();//ZonedDateTime endSysDef = end.atZone(ZoneId.systemDefault());
-        //ZonedDateTime endUTC = endSysDef.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime endEST = appointment.getZdtEnd();
         end = endEST.toLocalDateTime();
 
         customer = appointment.getCustomerID();
@@ -203,6 +207,11 @@ public class AppointmentDao implements ScheduleAppDAO{
             ps.execute();
     }
 
+    /**
+     * Returns the list of appointments for a particular contact.
+     * @param contact Integer ID of the contact to get the appointments for.
+     * @return List of appointments that belong to the contact.
+     */
     public ObservableList<Appointment> selectContactSchedule(int contact){
         appointments.clear();
         String selectStatement = "SELECT * FROM client_schedule.appointments WHERE Contact_ID = ?";
@@ -238,26 +247,27 @@ public class AppointmentDao implements ScheduleAppDAO{
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                ZoneId zoneId = ZoneId.systemDefault();
                 ZonedDateTime zdtStart = start.atZone(ZoneId.of("UTC"));
                 ZonedDateTime zdtEnd = end.atZone(ZoneId.of("UTC"));
-                Customer customer = customerDao.selectSingleCustomer(customerID);
-                User user = userDao.selectSingleUser(userID);
+                Customer customer = CustomerDao.selectSingleCustomer(customerID);
+                User user = UserDao.selectSingleUser(userID);
 
                 Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contactID, zdtStart, zdtEnd, customer, user);
 
-                this.appointments.add(appointment); //add appointments in observable list
-                this.objects.add(appointment);
+                appointments.add(appointment); //add appointments in observable list
+                objects.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
         return appointments;
-
     }
 
+    /**
+     * Returns the list of appointments for a particular customer.
+     * @param customer Integer ID of the customer to get the appointments for.
+     * @return List of appointments that belong to the customer.
+     */
     public static ObservableList<Appointment> selectCustomerSchedule(int customer){
         appointments.clear();
         String selectStatement = "SELECT * FROM client_schedule.appointments WHERE Customer_ID = ?";
@@ -292,7 +302,6 @@ public class AppointmentDao implements ScheduleAppDAO{
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                ZoneId zoneId = ZoneId.systemDefault();
                 ZonedDateTime zdtStart = start.atZone(ZoneId.of("America/New_York"));
                 ZonedDateTime zdtEnd = end.atZone(ZoneId.of("America/New_York"));
                 Customer customerObj = CustomerDao.selectSingleCustomer(customerID);
@@ -308,6 +317,11 @@ public class AppointmentDao implements ScheduleAppDAO{
         return appointments;
     }
 
+    /**
+     * Returns the list of appointments for a particular user.
+     * @param user Integer ID of the user to get the appointments for.
+     * @return List of appointments that belong to the user.
+     */
     public ObservableList<Appointment> selectUserSchedule(int user){
         appointments.clear();
         String selectStatement = "SELECT * FROM client_schedule.appointments WHERE User_ID = ?";
@@ -343,24 +357,20 @@ public class AppointmentDao implements ScheduleAppDAO{
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                ZoneId zoneId = ZoneId.systemDefault();
                 ZonedDateTime zdtStart = start.atZone(ZoneId.of("UTC"));
                 ZonedDateTime zdtEnd = end.atZone(ZoneId.of("UTC"));
-                Customer customer = customerDao.selectSingleCustomer(customerID);
-                User userObj = userDao.selectSingleUser(userID);
+                Customer customer = CustomerDao.selectSingleCustomer(customerID);
+                User userObj = UserDao.selectSingleUser(userID);
 
                 Appointment appointment = new Appointment(appointmentID, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contactID, zdtStart, zdtEnd, customer, userObj);
 
-                this.appointments.add(appointment); //add appointments in observable list
-                this.objects.add(appointment);
+                appointments.add(appointment); //add appointments in observable list
+                objects.add(appointment);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
-
         return appointments;
-
     }
 
 

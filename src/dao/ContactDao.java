@@ -10,10 +10,17 @@ import utils.DBQuery;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * Dao for the contacts SQL operations.
+ */
 public class ContactDao {
     private Connection conn = DBConnection.getConnnection(); //Connect to database
     private ObservableList<Contact> contacts = FXCollections.observableArrayList();
 
+    /**
+     * Returns the list contact records from the database.
+     * @return List of the contact objects from the database.
+     */
     public ObservableList<Contact> selectContacts() {
         String selectContactStatement = "SELECT * FROM contacts";
         try {
@@ -43,6 +50,12 @@ public class ContactDao {
         return contacts;
     }
 
+    /**
+     * Returns a single contact record from the database.
+     * @param ID Integer ID of the contact to be retrieved.
+     * @return The contact object from the database.
+     * @throws SQLException Rethrows SQLException when the query is executed.
+     */
     public Contact selectSingleContact(int ID) throws SQLException {
         Contact contact = new Contact(-1,"Judah", "judah@theman.com");
         String select = "SELECT * FROM contacts WHERE Contact_ID = ?";

@@ -10,12 +10,18 @@ import utils.DBQuery;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * Dao for the user database operations.
+ */
 public class UserDao {
     private static Connection conn = DBConnection.getConnnection();
     private User user;
     private ObservableList<User> userList = FXCollections.observableArrayList();
 
-
+    /**
+     * Retrieves all user records from the database.
+     * @return List of user objecets from the databse.
+     */
     public ObservableList<User> selectAllUsers(){
         String selectAll = "SELECT * FROM users";
         try{
@@ -49,7 +55,12 @@ public class UserDao {
         return userList;
     }
 
-
+    /**
+     * Retrieves a single user from the database.
+     * @param ID Integer ID of the user to be retrieved.
+     * @return User object from the database.
+     * @throws SQLException Rethrows SQLException when the query is executed.
+     */
     public static User selectSingleUser(int ID) throws SQLException {
         User user = new User(-1, "Hello", "Password", Timestamp.valueOf(LocalDateTime.now()), "The Creator", Timestamp.valueOf(LocalDateTime.now()), "Updater");
         String select = "SELECT * FROM users WHERE User_ID = ?";

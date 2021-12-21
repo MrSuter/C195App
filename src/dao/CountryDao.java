@@ -10,10 +10,16 @@ import utils.DBQuery;
 import java.sql.*;
 import java.time.LocalDateTime;
 
+/**
+ * Dao for the country database operations.
+ */
 public class CountryDao {
     private Connection conn = DBConnection.getConnnection();
 
-
+    /**
+     * Returns the list of country records from the database.
+     * @return List of counrty objects from the database.
+     */
     public ObservableList<Country> selectCountries(){
         String selectStatement = "SELECT * FROM countries";
         ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
@@ -43,6 +49,11 @@ public class CountryDao {
         return countryObservableList;
     }
 
+    /**
+     * Returns a single country record from the database.
+     * @param ID Integer ID of the country to be retrieved.
+     * @return Country object from the database.
+     */
     public Country selectSingleCountry(int ID){
         Country country = new Country(-1, "Amelia", Timestamp.valueOf(LocalDateTime.now()), "Josephine", Timestamp.valueOf(LocalDateTime.now()), "Anita");
         String select = "SELECT * FROM countries WHERE Country_ID = ?;";
