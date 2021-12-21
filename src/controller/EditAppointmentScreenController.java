@@ -21,6 +21,9 @@ import model.Customer;
 import model.User;
 import utils.Validation;
 
+/**
+ * Controller for the edit appointment screen.
+ */
 public class EditAppointmentScreenController {
     private AppointmentDao appointmentDao = new AppointmentDao();
     private ContactDao contactDao = new ContactDao();
@@ -35,10 +38,12 @@ public class EditAppointmentScreenController {
     private ZoneId localZone = ZoneId.systemDefault();
 
 
-    public Appointment getEditAppointment() {
-        return editAppointment;
-    }
+    //public Appointment getEditAppointment() {        return editAppointment;    }
 
+    /**
+     * Sets the appointment to be edited from the appointment screen. Fills all of the combo boxes and fields with the appointment's data.
+     * @param editAppointment The appointment that was selected in the appointment screen.
+     */
     public void setEditAppointment(Appointment editAppointment) {
         this.editAppointment = editAppointment;
         titleTxt.setText(editAppointment.getTitle());
@@ -93,16 +98,6 @@ public class EditAppointmentScreenController {
         IDText.setText(String.valueOf(appointmentID));
     }
 
-/*
-    public void populateFields(Appointment appointment){
-        IDText.setText(appointment.getModifyAppt().getTitle());
-        titleTxt.setText(appointment.getTitle());
-        descriptionTxt.setText(appointment.getModifyAppt().getDescription());
-        locationTxt.setText(appointment.getModifyAppt().getLocation());
-        //contactComboBox.setSelectionModel();
-    }
-    */
-
     @FXML // fx:id="IDText"
     private TextField IDText; // Value injected by FXMLLoader
 
@@ -114,9 +109,7 @@ public class EditAppointmentScreenController {
 
     @FXML // fx:id="titleTxt"
     private TextField titleTxt; // Value injected by FXMLLoader
-    public void setTitleTxt(String string){
-        titleTxt.setText(string);
-    }
+    //public void setTitleTxt(String string){        titleTxt.setText(string);    }
 
     @FXML // fx:id="customerComboBox"
     private ComboBox<Customer> customerComboBox; // Value injected by FXMLLoader
@@ -148,8 +141,8 @@ public class EditAppointmentScreenController {
     @FXML // fx:id="startAMRB"
     private RadioButton startAMRB; // Value injected by FXMLLoader
 
-    @FXML // fx:id="startAmPM"
-    private ToggleGroup startAmPM; // Value injected by FXMLLoader
+    //@FXML // fx:id="startAmPM"
+    //private ToggleGroup startAmPM; // Value injected by FXMLLoader
 
     @FXML // fx:id="startPMRB"
     private RadioButton startPMRB; // Value injected by FXMLLoader
@@ -172,21 +165,22 @@ public class EditAppointmentScreenController {
     @FXML // fx:id="endPMRB"
     private RadioButton endPMRB; // Value injected by FXMLLoader
 
+    /**
+     * Navigates to the main screen.
+     * @param event When the user clicks the cancel button.
+     * @throws IOException Rethrows IOException when toMainScreen is called.
+     */
     @FXML //Cancel button
     void goToMainScreen(ActionEvent event) throws IOException {
         Navigation.toMainScreen(event);
     }
 
-    @FXML
-    void onAM(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onPM(ActionEvent event) {
-
-    }
-
+    /**
+     * Updates the appointment that was to be edited to the database.
+     * @param event When the user clicks the save button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     * @throws SQLException Rethrows IOException when executing the SQL statement.
+     */
     @FXML //Save button
     void onSave(ActionEvent event) throws IOException, SQLException {
         int appointmentID = editAppointment.getAppointmentID();
@@ -211,8 +205,8 @@ public class EditAppointmentScreenController {
         String createdBy = User.getCurrentUser().getUserName();
         LocalDateTime lastUpdate = LocalDateTime.now();
         String lastUpdatedBy = User.getCurrentUser().getUserName();
-        Customer customer = customerDao.selectSingleCustomer(customerID);
-        User userObj = userDao.selectSingleUser(userID);
+        Customer customer = CustomerDao.selectSingleCustomer(customerID);
+        User userObj = UserDao.selectSingleUser(userID);
 
 
         int selStartHr;
@@ -262,16 +256,20 @@ public class EditAppointmentScreenController {
             appointmentDao.update(appointment);
             Navigation.toMainScreen(event);
         }
-
-
-
     }
 
+    /**
+     * Sets the end date of the appointment to be the same as the start date.
+     * @param event When the user chooses a start date.
+     */
     @FXML
     void setDate(ActionEvent event) {
         endDatePicker.setValue(startDatePicker.getValue());
     }
 
+    /**
+     * Sets the combo boxes when the screen is loaded.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         int startHr = 1;

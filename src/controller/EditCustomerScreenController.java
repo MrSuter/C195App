@@ -23,6 +23,9 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+/**
+ * Controller for the edit customer screen.
+ */
 public class EditCustomerScreenController {
     ObservableList<Country> countryList = FXCollections.observableArrayList();
     ObservableList<Division> divisionList = FXCollections.observableArrayList();
@@ -34,10 +37,12 @@ public class EditCustomerScreenController {
     CustomerDao customerDao = new CustomerDao();
 
 
-    public Customer getEditCustomer() {
-        return editCustomer;
-    }
+    //public Customer getEditCustomer() {        return editCustomer;    }
 
+    /**
+     * Sets the customer to be edited from the customer screen. Sets all of the text fields and combo boxes with the selected appointment's data.
+     * @param editCustomer The selected customer from the customer screen.
+     */
     public void setEditCustomer(Customer editCustomer) {
         this.editCustomer = editCustomer;
         int customerID = editCustomer.getCustomerID();
@@ -58,13 +63,6 @@ public class EditCustomerScreenController {
         stateComboBox.setItems(divisionList);
         stateComboBox.setValue(selDivision);
     }
-
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
 
     @FXML // fx:id="customerIDTxt"
     private TextField customerIDTxt; // Value injected by FXMLLoader
@@ -90,6 +88,10 @@ public class EditCustomerScreenController {
     @FXML // fx:id="phoneTxt"
     private TextField phoneTxt; // Value injected by FXMLLoader
 
+    /**
+     * Sets the division combo box after a country is selected.
+     * @param event When the user selects a country.
+     */
     @FXML
     void chooseCountry(ActionEvent event) {
         Country selCountry = countryComboBox.getSelectionModel().getSelectedItem();
@@ -99,16 +101,21 @@ public class EditCustomerScreenController {
 
     }
 
-    @FXML
-    void chooseDivision(ActionEvent event) {
-
-    }
-
+    /**
+     * Navigates to the customer screen.
+     * @param event When the user clicks the cancel button.
+     * @throws IOException Rethrows IOException when loading the screen.
+     */
     @FXML
     void goToCustomersScreen(ActionEvent event) throws IOException {
         Navigation.toCustomersScreen(event);
     }
 
+    /**
+     * Updates the customer in the database that was selected in the customer screen.
+     * @param event When the user clicks the save button.
+     * @throws IOException Rethrows IOException when the screen is loaded.
+     */
     @FXML
     void saveCustomer(ActionEvent event) throws IOException {
         int customerID = editCustomer.getCustomerID();
@@ -129,21 +136,14 @@ public class EditCustomerScreenController {
         Navigation.toCustomersScreen(event);
     }
 
+    /**
+     * Sets the combo boxes when the screen is loaded.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         countryList = countryDao.selectCountries();
         divisionList = divisionDao.selectAllDivisions();
-
         countryComboBox.setItems(countryList);
-        //stateComboBox.setItems(divisionList);
-
-
-        /*
-        Country selCountry = countryComboBox.getSelectionModel().getSelectedItem();
-        int countryID = selCountry.getCountryID();
-        divisionList = divisionDao.selectDivisionsInCountry(countryID);
-        stateComboBox.setItems(divisionList);
-         */
 
     }
 }

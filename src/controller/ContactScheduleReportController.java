@@ -23,6 +23,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for the contact schedule report.
+ */
 public class ContactScheduleReportController {
     private ObservableList<Contact> allContactsList = FXCollections.observableArrayList();
     private ObservableList<Appointment> contactScheduleList = FXCollections.observableArrayList();
@@ -30,15 +33,6 @@ public class ContactScheduleReportController {
     private AppointmentDao appointmentDao = new AppointmentDao();
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a zzz");
 
-
-    @FXML
-    void clearTable(ActionEvent event) {
-        contactScheduleTableview.getItems().clear();
-        contactScheduleList.clear();
-    }
-
-    @FXML
-    private Button totalAppointmentsBtn;
 
     @FXML
     private TableView<Appointment> contactScheduleTableview;
@@ -67,11 +61,21 @@ public class ContactScheduleReportController {
     @FXML
     private TableColumn<Appointment, Integer> colCustomerID;
 
+    /**
+     * Navigates to the main screen.
+     * @param event When the user clicks the back button.
+     * @throws IOException Rethrows IOException toMainScreen.
+     */
     @FXML
     void goToMainScreen(ActionEvent event) throws IOException {
         Navigation.toMainScreen(event);
     }
 
+    /**
+     * Sets the table after the contact is selected from the combo box.
+     * @param event When the user chooses a contact.
+     * @throws SQLException Rethrows SQLException selectContactSchedule.
+     */
     @FXML
     void selectContact(ActionEvent event) throws SQLException {
         contactScheduleTableview.getItems().clear();
@@ -91,11 +95,10 @@ public class ContactScheduleReportController {
         contactScheduleTableview.getItems().addAll(contactScheduleList);
     }
 
-    @FXML
-    void showTotalAppointments(ActionEvent event) {
-
-    }
-
+    /**
+     * Sets the contact combo box when the screen is loaded.
+     * @throws SQLException Rethrows SQLException selectContacts
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() throws SQLException {
 

@@ -40,14 +40,6 @@ public class AddAppointmentScreenController {
     private ZoneId localZone = ZoneId.systemDefault();
 
 
-
-
-
-
-
-
-
-
     @FXML private RadioButton startAMRB;
     @FXML private RadioButton startPMRB;
     @FXML private RadioButton endAMRB;

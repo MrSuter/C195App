@@ -19,16 +19,13 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
 
+/**
+ * Controller for the customer screen.
+ */
 public class CustomersScreenController {
-    //Navigation navigation = new Navigation();
+
     CustomerDao customerDao = new CustomerDao();
     EditCustomerScreenController editCustomerScreenController = new EditCustomerScreenController();
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
 
     @FXML
     private TableView<Customer> customersTableView;
@@ -50,16 +47,30 @@ public class CustomersScreenController {
     @FXML
     private TableColumn<Customer, String> colPhoneNumber;
 
+    /**
+     * Navigates to the main screen.
+     * @param event When the user clicks the back button.
+     * @throws IOException Rethrows IOException toMainScreen.
+     */
     @FXML // Back button, goes to Main screen
     void backToMainScreen(ActionEvent event) throws IOException {
         Navigation.toMainScreen(event);
     }
 
+    /**
+     * Navigates to the add customer screen.
+     * @param event When the user clicks the add customer button.
+     * @throws IOException Rethrows IOException toAddCustomerScreen.
+     */
     @FXML //Add customer button, goes to add customer screen
     void goToAddCustomerScreen(ActionEvent event) throws IOException {
         Navigation.toAddCustomerScreen(event);
     }
 
+    /**
+     * Deletes the selected customer from the database.
+     * @param event When the user clicks the delete button.
+     */
     @FXML
     void deleteCustomer(ActionEvent event) {
         Customer deleteCustomer = customersTableView.getSelectionModel().getSelectedItem();
@@ -71,7 +82,6 @@ public class CustomersScreenController {
             if(result.isPresent() && result.get() == ButtonType.OK) {
 
                 customerDao.deleteCustomer(customerID);
-                //System.out.println("Customer ID: " + customerID);
 
                 customersTableView.getItems().clear();
                 customersTableView.setItems(customerDao.selectCustomers());
@@ -80,6 +90,11 @@ public class CustomersScreenController {
         }
     }
 
+    /**
+     * Navigates to the edit customer screen. Also sends the selected customer in order to allow it to be edited.
+     * @param event When the user clicks the edit button.
+     * @throws IOException Rethrows IOException when loading the controller.
+     */
     @FXML
     void goToEditCustomerScreen(ActionEvent event) throws IOException {
         if(customersTableView.getSelectionModel().getSelectedItem() != null) {
@@ -99,6 +114,9 @@ public class CustomersScreenController {
         }
     }
 
+    /**
+     * Sets the table of customers when the screen is opened.
+     */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         this.colCustomerID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCustomerID()));

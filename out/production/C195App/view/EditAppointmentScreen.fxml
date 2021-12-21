@@ -74,7 +74,7 @@
                         <ComboBox fx:id="startMinComboBox" prefHeight="26.0" prefWidth="69.0" promptText="Min" />
 
                          
-                        <RadioButton fx:id="startAMRB" mnemonicParsing="false" onAction="#onAM" prefHeight="30.0" prefWidth="46.0" text="AM">
+                        <RadioButton fx:id="startAMRB" mnemonicParsing="false" prefHeight="30.0" prefWidth="46.0" text="AM">
                            <padding>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </padding>
@@ -82,7 +82,7 @@
                               <ToggleGroup fx:id="startAmPM" />
                            </toggleGroup>
                         </RadioButton>
-                        <RadioButton fx:id="startPMRB" mnemonicParsing="false" onAction="#onPM" prefHeight="30.0" prefWidth="46.0" text="PM" toggleGroup="$startAmPM">
+                        <RadioButton fx:id="startPMRB" mnemonicParsing="false" prefHeight="30.0" prefWidth="46.0" text="PM" toggleGroup="$startAmPM">
                            <padding>
                               <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                            </padding></RadioButton>
@@ -100,7 +100,7 @@
                               </Label>
                               <ComboBox fx:id="endHourComboBox" prefHeight="26.0" prefWidth="63.0" promptText="Hr" />
                               <ComboBox fx:id="endMinComboBox" prefHeight="26.0" prefWidth="69.0" promptText="Min" />
-                              <RadioButton fx:id="endAMRB" mnemonicParsing="false" onAction="#onAM" prefHeight="30.0" prefWidth="46.0" text="AM">
+                              <RadioButton fx:id="endAMRB" mnemonicParsing="false" prefHeight="30.0" prefWidth="46.0" text="AM">
                                  <padding>
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </padding>
@@ -108,7 +108,7 @@
                                     <ToggleGroup fx:id="endAmPm" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="endPMRB" mnemonicParsing="false" onAction="#onPM" prefHeight="30.0" prefWidth="46.0" text="PM" toggleGroup="$endAmPm">
+                              <RadioButton fx:id="endPMRB" mnemonicParsing="false" prefHeight="30.0" prefWidth="46.0" text="PM" toggleGroup="$endAmPm">
                                  <padding>
                                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                                  </padding></RadioButton>

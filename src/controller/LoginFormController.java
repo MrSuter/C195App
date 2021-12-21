@@ -24,6 +24,9 @@ import org.w3c.dom.ls.LSOutput;
 import utils.DBConnection;
 import utils.DBQuery;
 
+/**
+ * The controller for the login screen.
+ */
 public class LoginFormController {
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private User user = new User(0,"username", "password", timestamp, "me", timestamp, "me");
@@ -51,9 +54,10 @@ public class LoginFormController {
     @FXML
     private Label locationLbl;
 
-
+    /**
+     * Sets the current location and time zone. The location determines what language to display
+     */
     @FXML
-        // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         Locale currentLocale = Locale.getDefault();
         ZoneId localZone = ZoneId.systemDefault();
@@ -67,16 +71,23 @@ public class LoginFormController {
             titleLbl.setText("Planification de la connexion à l'application");
         }
 
-        //System.out.println(currentLocale.getCountry() + " | " + localZone + " | " + displayLanguage);
-
-
     }
 
+    /**
+     * Closes the program.
+     * @param actionEvent The user clicking the exit button.
+     */
     @FXML //Exit program button
     public void closeProgram(ActionEvent actionEvent) {
         System.exit(0);
     }
 
+    /**
+     * Logs the user into the program and opens the main screen. Displays error message if incorrect username or password.
+     * @param event The user clicking the login button.
+     * @throws IOException Rethrows IOException when loading the next screen.
+     * @throws SQLException Rethrows SQLException when executing the SQL query.
+     */
     @FXML //Login button
     public void goToMainScreen(ActionEvent event) throws IOException, SQLException {
         Connection conn = DBConnection.getConnnection(); //Connect to database
