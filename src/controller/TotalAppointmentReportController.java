@@ -314,9 +314,5 @@ public class TotalAppointmentReportController {
         month9Lbl.setText(month9);
         month10Lbl.setText(month10);
         month11Lbl.setText(month11);
-
-
-
-
     }
 }

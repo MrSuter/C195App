@@ -1,12 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.*;
 import java.time.*;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import dao.AppointmentDao;
 import dao.ContactDao;
 import dao.CustomerDao;
@@ -22,21 +18,19 @@ import model.Customer;
 import model.User;
 import utils.Validation;
 
-import javax.security.auth.callback.Callback;
-
 /**
  * Controller for the screen that adds appointments to the database.
  */
 public class AddAppointmentScreenController {
-    private AppointmentDao appointmentDao = new AppointmentDao();
-    private UserDao userDao = new UserDao();
-    private ContactDao contactDao = new ContactDao();
-    private CustomerDao customerDao = new CustomerDao();
-    private ObservableList<Contact> contactList = FXCollections.observableArrayList();
-    private ObservableList<String> typeList = FXCollections.observableArrayList();
-    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    private ObservableList<User> userList = FXCollections.observableArrayList();
-    private ZoneId est = ZoneId.of("America/New_York");
+    private final AppointmentDao appointmentDao = new AppointmentDao();
+    private final UserDao userDao = new UserDao();
+    private final ContactDao contactDao = new ContactDao();
+    private final CustomerDao customerDao = new CustomerDao();
+    private final ObservableList<Contact> contactList = FXCollections.observableArrayList();
+    private final ObservableList<String> typeList = FXCollections.observableArrayList();
+    private final ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private final ObservableList<User> userList = FXCollections.observableArrayList();
+    private final ZoneId est = ZoneId.of("America/New_York");
     private ZoneId localZone = ZoneId.systemDefault();
 
 
@@ -44,12 +38,6 @@ public class AddAppointmentScreenController {
     @FXML private RadioButton startPMRB;
     @FXML private RadioButton endAMRB;
     @FXML private RadioButton endPMRB;
-
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
 
     @FXML // fx:id="titleTxt"
     private TextField titleTxt; // Value injected by FXMLLoader
@@ -81,9 +69,6 @@ public class AddAppointmentScreenController {
     @FXML // fx:id="startMinComboBox"
     private ComboBox<Integer> startMinComboBox; // Value injected by FXMLLoader
 
-    @FXML // fx:id="startAmPM"
-    private ToggleGroup startAmPM; // Value injected by FXMLLoader
-
     @FXML // fx:id="endDatePicker"
     private DatePicker endDatePicker; // Value injected by FXMLLoader
 
@@ -92,9 +77,6 @@ public class AddAppointmentScreenController {
 
     @FXML // fx:id="endMinComboBox"
     private ComboBox<Integer> endMinComboBox; // Value injected by FXMLLoader
-
-    @FXML // fx:id="endAmPm"
-    private ToggleGroup endAmPm; // Value injected by FXMLLoader
 
     @FXML //Cancel button
     void goToMainScreen(ActionEvent event) throws IOException {
@@ -184,16 +166,15 @@ public class AddAppointmentScreenController {
 
         } catch (NullPointerException nullPointerException){
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "All fields are required");
-            Optional<ButtonType> result = alert.showAndWait();
+            alert.showAndWait();
         }
     }
 
     /**
      * Sets the end date to be the same as the start date.
-     * @param event The user chooses the start date.
      */
     @FXML
-    void setDate(ActionEvent event) {
+    void setDate() {
         endDatePicker.setValue(startDatePicker.getValue());
     }
 
@@ -236,13 +217,6 @@ public class AddAppointmentScreenController {
         //Select Users and add to list
         userList.addAll(userDao.selectAllUsers());
         userComboBox.setItems(userList);
-
-
-
-
-
-        //cmbFruit.getItems().add(apple);
-
 
     }
 }

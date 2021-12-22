@@ -1,17 +1,6 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoZonedDateTime;
-import java.util.ResourceBundle;
-
 import dao.AppointmentDao;
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,9 +9,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
 import model.Appointment;
+import java.io.IOException;
+import java.time.Month;
 
 /**
  * Controller for the reports screen.
@@ -72,74 +62,78 @@ public class ReportsScreenController {
 
     /**
      * Navigates to the total appointments screen and sorts the appointments into the appropriate lists to give a count for each list.
+     * LAMDBA EXPRESSION: the forEach lambda is easy to read, write, and utilizes multi-core CPUs.
      * @param event When the user clicks the total report button.
      * @throws IOException Rethrows IOException when loading the next screen.
      */
     @FXML //Total number of customer appointments by type and month
     void showTotalAppointments(ActionEvent event) throws IOException {
-
-        for(Object o : allAppointmentsList){
+        allAppointmentsList.forEach(o -> {
             Appointment a = (Appointment) o;
             String type = a.getType();
-            if(type.equals("Planning Session")){
-                planningSessionAppointments.add(a);
-            } else if(type.equals("De-Briefing")){
-                deBriefingAppointments.add(a);
-            } else if(type.equals("Lunch")){
-                lunchAppointments.add(a);
-            } else {
-                System.out.println("Type does not exist: " + type);
+            switch (type) {
+                case "Planning Session":
+                    planningSessionAppointments.add(a);
+                    break;
+                case "De-Briefing":
+                    deBriefingAppointments.add(a);
+                    break;
+                case "Lunch":
+                    lunchAppointments.add(a);
+                    break;
+                default:
+                    System.out.println("Type does not exist: " + type);
+                    break;
             }
             Month month = a.getZdtStart().getMonth();
 
-                if(month.equals(Month.JANUARY)){
-                    janMonthList.add(a);
-                } else if(month.equals(Month.FEBRUARY)){
-                    febMonthList.add(a);
-                } else if(month.equals(Month.APRIL)){
-                    aprMonthList.add(a);
-                } else if(month.equals(Month.MAY)){
-                    mayMonthList.add(a);
-                } else if(month.equals(Month.JUNE)){
-                    junMonthList.add(a);
-                } else if(month.equals(Month.JULY)){
-                    julMonthList.add(a);
-                } else if(month.equals(Month.AUGUST)){
-                    augMonthList.add(a);
-                } else if(month.equals(Month.SEPTEMBER)){
-                    sepMonthList.add(a);
-                } else if(month.equals(Month.OCTOBER)){
-                    octMonthList.add(a);
-                } else if(month.equals(Month.NOVEMBER)){
-                    novMonthList.add(a);
-                } else if(month.equals(Month.DECEMBER)){
-                    decMonthList.add(a);
-                } else if(month.equals(Month.MARCH)){
-                    marMonthList.add(a);
-                }
-
-        }
+            if(month.equals(Month.JANUARY)){
+                janMonthList.add(a);
+            } else if(month.equals(Month.FEBRUARY)){
+                febMonthList.add(a);
+            } else if(month.equals(Month.APRIL)){
+                aprMonthList.add(a);
+            } else if(month.equals(Month.MAY)){
+                mayMonthList.add(a);
+            } else if(month.equals(Month.JUNE)){
+                junMonthList.add(a);
+            } else if(month.equals(Month.JULY)){
+                julMonthList.add(a);
+            } else if(month.equals(Month.AUGUST)){
+                augMonthList.add(a);
+            } else if(month.equals(Month.SEPTEMBER)){
+                sepMonthList.add(a);
+            } else if(month.equals(Month.OCTOBER)){
+                octMonthList.add(a);
+            } else if(month.equals(Month.NOVEMBER)){
+                novMonthList.add(a);
+            } else if(month.equals(Month.DECEMBER)){
+                decMonthList.add(a);
+            } else if(month.equals(Month.MARCH)){
+                marMonthList.add(a);
+            }
+        });
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/view/TotalAppointmentReport.fxml"));
         loader.load();
         totalAppointmentReportController = loader.getController();
-        totalAppointmentReportController.setDeBriefingQuantity((int) deBriefingAppointments.stream().count());
-        totalAppointmentReportController.setLunchQuantity((int) lunchAppointments.stream().count());
-        totalAppointmentReportController.setPlanningQuantity((int) planningSessionAppointments.stream().count());
+        totalAppointmentReportController.setDeBriefingQuantity(deBriefingAppointments.size());
+        totalAppointmentReportController.setLunchQuantity(lunchAppointments.size());
+        totalAppointmentReportController.setPlanningQuantity(planningSessionAppointments.size());
 
-        totalAppointmentReportController.setMonth0Qty((int) janMonthList.stream().count());
-        totalAppointmentReportController.setMonth1Qty((int) febMonthList.stream().count());
-        totalAppointmentReportController.setMonth2Qty((int) marMonthList.stream().count());
-        totalAppointmentReportController.setMonth3Qty((int) aprMonthList.stream().count());
-        totalAppointmentReportController.setMonth4Qty((int) mayMonthList.stream().count());
-        totalAppointmentReportController.setMonth5Qty((int) junMonthList.stream().count());
-        totalAppointmentReportController.setMonth6Qty((int) julMonthList.stream().count());
-        totalAppointmentReportController.setMonth7Qty((int) augMonthList.stream().count());
-        totalAppointmentReportController.setMonth8Qty((int) sepMonthList.stream().count());
-        totalAppointmentReportController.setMonth9Qty((int) octMonthList.stream().count());
-        totalAppointmentReportController.setMonth10Qty((int) novMonthList.stream().count());
-        totalAppointmentReportController.setMonth11Qty((int) decMonthList.stream().count());
+        totalAppointmentReportController.setMonth0Qty(janMonthList.size());
+        totalAppointmentReportController.setMonth1Qty(febMonthList.size());
+        totalAppointmentReportController.setMonth2Qty(marMonthList.size());
+        totalAppointmentReportController.setMonth3Qty(aprMonthList.size());
+        totalAppointmentReportController.setMonth4Qty(mayMonthList.size());
+        totalAppointmentReportController.setMonth5Qty(junMonthList.size());
+        totalAppointmentReportController.setMonth6Qty(julMonthList.size());
+        totalAppointmentReportController.setMonth7Qty(augMonthList.size());
+        totalAppointmentReportController.setMonth8Qty(sepMonthList.size());
+        totalAppointmentReportController.setMonth9Qty(octMonthList.size());
+        totalAppointmentReportController.setMonth10Qty(novMonthList.size());
+        totalAppointmentReportController.setMonth11Qty(decMonthList.size());
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         Parent scene = loader.getRoot();

@@ -1,11 +1,5 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ResourceBundle;
-
 import dao.CountryDao;
 import dao.CustomerDao;
 import dao.DivisionDao;
@@ -19,19 +13,22 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
 /**
  * Controller for the screen that adds customers to the database.
  */
 public class AddCustomerScreenController {
     private ObservableList<Division> divisionObservableList = FXCollections.observableArrayList();
-    private ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
-    private CountryDao countryDao = new CountryDao();
-    private DivisionDao divisionDao = new DivisionDao();
-    private CustomerDao customerDao = new CustomerDao();
-    private ObservableList<Division> statesList = FXCollections.observableArrayList();
-    private ObservableList<Division> canadaList = FXCollections.observableArrayList();
-    private ObservableList<Division> britainList = FXCollections.observableArrayList();
-    private Division selDivision;// = stateComboBox.getSelectionModel().getSelectedItem();
+    private final ObservableList<Country> countryObservableList = FXCollections.observableArrayList();
+    private final CountryDao countryDao = new CountryDao();
+    private final DivisionDao divisionDao = new DivisionDao();
+    private final CustomerDao customerDao = new CustomerDao();
+    private final ObservableList<Division> statesList = FXCollections.observableArrayList();
+    private final ObservableList<Division> canadaList = FXCollections.observableArrayList();
+    private final ObservableList<Division> britainList = FXCollections.observableArrayList();
 
     @FXML // fx:id="nameTxt"
     private TextField nameTxt; // Value injected by FXMLLoader
@@ -76,7 +73,6 @@ public class AddCustomerScreenController {
         String streetAddress = streetTxt.getText();
         String city = cityTxt.getText();
         String address = (streetAddress + " " + city);
-        Country country = countryComboBox.getSelectionModel().getSelectedItem();
         Division division = stateComboBox.getSelectionModel().getSelectedItem();
         String postalCode = postalCodeTxt.getText();
         String phoneNumber= phoneTxt.getText();
@@ -99,10 +95,9 @@ public class AddCustomerScreenController {
 
     /**
      * Sets the division observable list for the division combo box when a country is chosen.
-     * @param event When the user chooses the country.
      */
     @FXML
-    void chooseCountry(ActionEvent event) {
+    void chooseCountry() {
         setDivisionObservableList();
 
     }
