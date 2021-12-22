@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.User;
 
 /**
  * Controller for the main screen. Shows the appointment schedule and allows navigation to the rest of the application.
@@ -275,16 +276,16 @@ public class MainScreenController {
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
 
-        this.colDescription.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getDescription()));
-        this.colAppointmentID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentID()));
-        this.colContact.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getContactID()));
-        this.colType.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getType()));
-        this.colCustomerID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getCustomer()));
-        this.colEnd.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getZdtEnd().format(formatter)));
-        this.colStart.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getZdtStart().format(formatter)));
-        this.colLocation.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getLocation()));
-        this.colTitle.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
-        this.colUserID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getUser()));
+        colDescription.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getDescription()));
+        colAppointmentID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getAppointmentID()));
+        colContact.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getContactID()));
+        colType.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getType()));
+        colCustomerID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getCustomer()));
+        colEnd.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getZdtEnd().format(formatter)));
+        colStart.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getZdtStart().format(formatter)));
+        colLocation.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getLocation()));
+        colTitle.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getTitle()));
+        colUserID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getUser()));
 
 
         if(allAppointments.isSelected()){
@@ -301,13 +302,13 @@ public class MainScreenController {
         }
         if(!upcomingAppointmentsList.isEmpty()){
             for(Appointment a : upcomingAppointmentsList) {
-                    System.out.println("Upcoming appointment: " + a.getTitle());
+                    //System.out.println("Upcoming appointment: " + a.getTitle());
                     Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
                     alert1.setContentText("Upcoming appointment ID: " + a.getAppointmentID() + " | time: " + a.getZdtStart().withZoneSameInstant(ZoneId.systemDefault()).format(formatter));
                     alert1.show();
             }
         } else {
-            System.out.println("No upcoming appointment in the next 15 minutes.");
+            //System.out.println("No upcoming appointment in the next 15 minutes.");
             Alert alert1 = new Alert(Alert.AlertType.INFORMATION);
             alert1.setContentText("No upcoming appointment in the next 15 minutes.");
             alert1.show();

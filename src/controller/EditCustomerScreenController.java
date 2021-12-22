@@ -1,14 +1,4 @@
-/**
- * Sample Skeleton for 'AddCustomerScreen.fxml' Controller Class
- */
-
 package controller;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ResourceBundle;
 
 import dao.CountryDao;
 import dao.CustomerDao;
@@ -22,6 +12,9 @@ import javafx.scene.control.TextField;
 import model.Country;
 import model.Customer;
 import model.Division;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Controller for the edit customer screen.
@@ -53,7 +46,7 @@ public class EditCustomerScreenController {
         phoneTxt.setText(editCustomer.getPhone());
 
         int divisionID = editCustomer.getDivisionID();
-        selDivision = divisionDao.selectSingleDivision(divisionID);
+        selDivision = DivisionDao.selectSingleDivision(divisionID);
 
         int countryID = selDivision.getCountryID();
         selCountry = countryDao.selectSingleCountry(countryID);
@@ -90,10 +83,9 @@ public class EditCustomerScreenController {
 
     /**
      * Sets the division combo box after a country is selected.
-     * @param event When the user selects a country.
      */
     @FXML
-    void chooseCountry(ActionEvent event) {
+    void chooseCountry() {
         Country selCountry = countryComboBox.getSelectionModel().getSelectedItem();
         int countryID = selCountry.getCountryID();
         divisionList = divisionDao.selectDivisionsInCountry(countryID);
@@ -128,7 +120,7 @@ public class EditCustomerScreenController {
         Timestamp lastUpdate = Timestamp.valueOf(LocalDateTime.now());
         String lastUpdatedBy = "User";
         int divisionID = stateComboBox.getSelectionModel().getSelectedItem().getDivisionID();
-        String divisionName = divisionDao.selectSingleDivision(divisionID).getDivision();
+        String divisionName = DivisionDao.selectSingleDivision(divisionID).getDivision();
 
         Customer customer = new Customer(customerID, customerName, address, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdatedBy, divisionID, divisionName);
         customerDao.update(customer);

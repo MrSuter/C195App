@@ -1,11 +1,8 @@
 package controller;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.time.*;
-import java.util.ResourceBundle;
-
 import dao.AppointmentDao;
 import dao.ContactDao;
 import dao.CustomerDao;
@@ -25,17 +22,17 @@ import utils.Validation;
  * Controller for the edit appointment screen.
  */
 public class EditAppointmentScreenController {
-    private AppointmentDao appointmentDao = new AppointmentDao();
-    private ContactDao contactDao = new ContactDao();
-    private CustomerDao customerDao = new CustomerDao();
-    private UserDao userDao = new UserDao();
+    private final AppointmentDao appointmentDao = new AppointmentDao();
+    private final ContactDao contactDao = new ContactDao();
+    private final CustomerDao customerDao = new CustomerDao();
+    private final UserDao userDao = new UserDao();
     private Appointment editAppointment;
-    private ObservableList<Contact> contactList = FXCollections.observableArrayList();
-    private ObservableList<String> typeList = FXCollections.observableArrayList();
-    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    private ObservableList<User> userList = FXCollections.observableArrayList();
-    private ZoneId est = ZoneId.of("America/New_York");
-    private ZoneId localZone = ZoneId.systemDefault();
+    private final ObservableList<Contact> contactList = FXCollections.observableArrayList();
+    private final ObservableList<String> typeList = FXCollections.observableArrayList();
+    private final ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private final ObservableList<User> userList = FXCollections.observableArrayList();
+    private final ZoneId est = ZoneId.of("America/New_York");
+    private final ZoneId localZone = ZoneId.systemDefault();
 
 
     //public Appointment getEditAppointment() {        return editAppointment;    }
@@ -101,12 +98,6 @@ public class EditAppointmentScreenController {
     @FXML // fx:id="IDText"
     private TextField IDText; // Value injected by FXMLLoader
 
-    @FXML // ResourceBundle that was given to the FXMLLoader
-    private ResourceBundle resources;
-
-    @FXML // URL location of the FXML file that was given to the FXMLLoader
-    private URL location;
-
     @FXML // fx:id="titleTxt"
     private TextField titleTxt; // Value injected by FXMLLoader
     //public void setTitleTxt(String string){        titleTxt.setText(string);    }
@@ -141,9 +132,6 @@ public class EditAppointmentScreenController {
     @FXML // fx:id="startAMRB"
     private RadioButton startAMRB; // Value injected by FXMLLoader
 
-    //@FXML // fx:id="startAmPM"
-    //private ToggleGroup startAmPM; // Value injected by FXMLLoader
-
     @FXML // fx:id="startPMRB"
     private RadioButton startPMRB; // Value injected by FXMLLoader
 
@@ -158,9 +146,6 @@ public class EditAppointmentScreenController {
 
     @FXML // fx:id="endAMRB"
     private RadioButton endAMRB; // Value injected by FXMLLoader
-
-    @FXML // fx:id="endAmPm"
-    private ToggleGroup endAmPm; // Value injected by FXMLLoader
 
     @FXML // fx:id="endPMRB"
     private RadioButton endPMRB; // Value injected by FXMLLoader
@@ -260,10 +245,9 @@ public class EditAppointmentScreenController {
 
     /**
      * Sets the end date of the appointment to be the same as the start date.
-     * @param event When the user chooses a start date.
      */
     @FXML
-    void setDate(ActionEvent event) {
+    void setDate() {
         endDatePicker.setValue(startDatePicker.getValue());
     }
 

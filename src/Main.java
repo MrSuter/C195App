@@ -5,6 +5,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import utils.DBConnection;
 import utils.DBQuery;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +27,7 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, IOException {
 
         //GeneralInterface square = n -> n * n ;
         //System.out.println(square.calculateSquare(5));
@@ -118,6 +123,39 @@ public class Main extends Application {
             System.out.println(userID + " | " + userName +password + " | " + date + " " + time + " | " + createdBy + " | " + lastUpdate);
         }
          */
+
+        /*
+        //filename and item variables
+        String fileName = "groceries.txt", item;
+
+        //Create scanner object
+        Scanner keyboard = new Scanner(System.in);
+
+        //Get item count
+        System.out.println("How many items do you have? ");
+        int numItems = keyboard.nextInt();
+
+        //clear keyboard buffer
+        keyboard.nextLine();
+
+        //Create filewriter object
+        FileWriter fileWriter = new FileWriter(fileName, true);
+
+        //Create and open file
+        PrintWriter outputFile = new PrintWriter(fileWriter);
+
+        //Get items and write to file
+        for(int i = 0; i < numItems; i++){
+            System.out.print("Enter item " + (i+1));
+            item = keyboard.nextLine();
+            outputFile.println(item);
+        }
+
+        //Close file
+        outputFile.close();
+        System.out.println("File written. ");
+         */
+
 
 
         launch(args);

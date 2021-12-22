@@ -1,15 +1,7 @@
 package controller;
 
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import dao.CustomerDao;
-import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Customer;
+
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Controller for the customer screen.
@@ -39,7 +34,7 @@ public class CustomersScreenController {
     @FXML
     private TableColumn<Customer, String> colAddress;
     @FXML
-    private TableColumn<Customer, Integer> colDivision;
+    private TableColumn<Customer, String> colDivision;
 
     @FXML
     private TableColumn<Customer, String> colPostalCode;
@@ -69,20 +64,18 @@ public class CustomersScreenController {
 
     /**
      * Deletes the selected customer from the database.
-     * @param event When the user clicks the delete button.
      */
     @FXML
-    void deleteCustomer(ActionEvent event) {
+    void deleteCustomer() {
         Customer deleteCustomer = customersTableView.getSelectionModel().getSelectedItem();
         if(deleteCustomer != null) {
             int customerID = deleteCustomer.getCustomerID();
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete? Are you sure?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Delete? Are you sure?\nThis will delete all appointments for this customer.");
             Optional<ButtonType> result = alert.showAndWait();
 
             if(result.isPresent() && result.get() == ButtonType.OK) {
 
                 customerDao.deleteCustomer(customerID);
-
                 customersTableView.getItems().clear();
                 customersTableView.setItems(customerDao.selectCustomers());
             }
@@ -119,12 +112,12 @@ public class CustomersScreenController {
      */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        this.colCustomerID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCustomerID()));
-        this.colName.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getName()));
-        this.colAddress.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getAddress()));
-        this.colDivision.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getDivisionName()));
-        this.colPostalCode.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getPostalCode()));
-        this.colPhoneNumber.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper(cellData.getValue().getPhone()));
+        colCustomerID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getCustomerID()));
+        colName.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getName()));
+        colAddress.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getAddress()));
+        colDivision.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<String>(cellData.getValue().getDivisionName()));
+        colPostalCode.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPostalCode()));
+        colPhoneNumber.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getPhone()));
 
         customersTableView.setItems(customerDao.selectCustomers());
 

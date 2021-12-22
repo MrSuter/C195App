@@ -217,6 +217,7 @@ public class AddAppointmentScreenController {
         //Select Users and add to list
         userList.addAll(userDao.selectAllUsers());
         userComboBox.setItems(userList);
+        userComboBox.setValue(User.getCurrentUser());
 
     }
 }
