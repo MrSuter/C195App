@@ -1,4 +1,4 @@
-# C195
+
 WGU Software 2 Schedule App
 This application allows the client to schedule their appointments with their customers. It displays the appointments by week and month, alerts the user of an upcoming appointment, and allows customers to be added and modified.
 
