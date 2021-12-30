@@ -76,7 +76,7 @@ public class LoginFormController {
 
         locationLbl.setText(localZone.toString());
 
-        if(displayLanguage.equals("French")){
+        if(displayLanguage.equals("français")){
             passwordLbl.setText("le mot de passe");
             userIDLbl.setText("Nom d'utilisateur");
             titleLbl.setText("Planification de la connexion à l'application");
