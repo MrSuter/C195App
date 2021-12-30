@@ -70,6 +70,9 @@ public class LoginFormController {
         Locale currentLocale = Locale.getDefault();
         ZoneId localZone = ZoneId.systemDefault();
         displayLanguage = currentLocale.getDisplayLanguage();
+        System.out.println("locale: " + currentLocale);
+        System.out.println("Locale.getLanguage: " + currentLocale.getLanguage());
+        System.out.println("Locale.getDisplayLanguage: " + currentLocale.getDisplayLanguage());
 
         locationLbl.setText(localZone.toString());
 
