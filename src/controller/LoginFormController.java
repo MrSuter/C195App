@@ -160,7 +160,7 @@ public class LoginFormController {
     }
 
     private void LoginTracker (String success) throws IOException {
-        String fileName = "login_activity.txt", loginAttempt;
+        String fileName = "login_activity.txt";
         FileWriter fileWriter = new FileWriter(fileName, true);
         PrintWriter outputFile = new PrintWriter(fileWriter);
         outputFile.println(inputUserName + ", " + inputPassword + ", " + timestamp + ", " + success);
