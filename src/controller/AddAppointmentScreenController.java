@@ -159,7 +159,7 @@ public class AddAppointmentScreenController {
             }
 
             if(Validation.hours(startEST, endEST) && Validation.overlap(customerID, appointmentID, startEST, endEST)){
-                Appointment appointment = new Appointment(appointmentID, title, description, location, type, LocalDateTime.of(startDate, startTime), end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contact, startEST, endEST, customer, userObj);
+                Appointment appointment = new Appointment(appointmentID, title, description, location, type, LocalDateTime.of(startDate, startTime), end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contact, startLocal, endLocal, customer, userObj);
                 appointmentDao.insert(appointment);
                 Navigation.toMainScreen(event);
             }

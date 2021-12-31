@@ -16,9 +16,9 @@ import java.time.*;
  */
 public class AppointmentDao implements ScheduleAppDAO{
 
-    private static Connection conn = DBConnection.getConnnection();
-    private static ObservableList<Appointment> appointments= FXCollections.observableArrayList();
-    private static ObservableList<Object> objects= FXCollections.observableArrayList();
+    private static final Connection conn = DBConnection.getConnnection();
+    private static final ObservableList<Appointment> appointments= FXCollections.observableArrayList();
+    private static final ObservableList<Object> objects= FXCollections.observableArrayList();
     private Object object;
     private String title;
     private String description;
@@ -119,6 +119,7 @@ public class AppointmentDao implements ScheduleAppDAO{
             ResultSet rs = ps.getResultSet();
 
             while (rs.next()) { //run through appointments from database and add each to the observable list
+                ZoneId zoneId = ZoneId.systemDefault();
                 int appointmentID = rs.getInt("Appointment_ID");
                 String title = rs.getString("Title");
                 String description = rs.getString("Description");
@@ -133,8 +134,8 @@ public class AppointmentDao implements ScheduleAppDAO{
                 int customerID = rs.getInt("Customer_ID");
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
-                ZonedDateTime zdtStart = start.atZone(ZoneId.of("America/New_York"));
-                ZonedDateTime zdtEnd = end.atZone(ZoneId.of("America/New_York"));
+                ZonedDateTime zdtStart = start.atZone(zoneId);
+                ZonedDateTime zdtEnd = end.atZone(zoneId);
                 Customer customer = CustomerDao.selectSingleCustomer(customerID);
                 User user = UserDao.selectSingleUser(userID);
 

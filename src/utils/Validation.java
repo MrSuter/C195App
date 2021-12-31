@@ -7,9 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import model.Appointment;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 /**
  * Utility for validating the appointments when they are added to the database.
@@ -24,12 +22,16 @@ public class Validation {
      * @return Boolean true if the appointment is within the operating hours, otherwise false.
      */
     public static Boolean hours(ZonedDateTime startEST, ZonedDateTime endEST){
+        ZoneId est = ZoneId.of("America/New_York");
+        LocalDate startDate = startEST.toLocalDate();
+        LocalTime closing = LocalTime.of(22, 1);
+        ZonedDateTime closingTime = ZonedDateTime.of(startDate, closing, est);
 
         if(endEST.isBefore(startEST)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText("End time must be after start time");
             alert.show();
-        }else if(((startEST.getHour() >= 8 && startEST.getHour() <= 22) && (endEST.getHour() >= 8 && endEST.getHour() <=22) )){
+        }else if(((startEST.getHour() >= 8 && startEST.getHour() <= 22) && (endEST.getHour() >= 8 && endEST.isBefore(closingTime)) )){
             return true;
             //Appointment appointment = new Appointment(appointmentID, title, description, location, type, LocalDateTime.of(startDate, startTime), end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, user, contact, startLocal, end.atZone(ZoneId.systemDefault()), customer);
             //appointmentDao.insert(appointment);

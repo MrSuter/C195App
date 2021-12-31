@@ -122,6 +122,7 @@ public class LoginFormController {
             if(displayLanguage.equals("French")){
                 alert = new Alert(Alert.AlertType.CONFIRMATION, frenchNoUser);
             }else {
+                LoginTracker("failure");
                 alert = new Alert(Alert.AlertType.CONFIRMATION, "Username does not exist");
             }
             alert.showAndWait();
