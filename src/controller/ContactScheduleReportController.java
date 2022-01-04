@@ -69,6 +69,7 @@ public class ContactScheduleReportController {
 
     /**
      * Sets the table after the contact is selected from the combo box.
+     * LAMBDA EXPRESSION: The lambda expression is easy to write and read and utilizes the multi-core cpu.
      */
     @FXML
     void selectContact() {

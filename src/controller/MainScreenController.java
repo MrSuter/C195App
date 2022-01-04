@@ -28,17 +28,15 @@ import model.User;
  * Controller for the main screen. Shows the appointment schedule and allows navigation to the rest of the application.
  */
 public class MainScreenController {
-    private LocalDateTime today = LocalDateTime.now();
-    private ObservableList<Appointment> monthAppointmentsList = FXCollections.observableArrayList();
-    private ObservableList<Appointment> weekAppointmentsList = FXCollections.observableArrayList();
-    private ObservableList<Appointment> allAppointmentsList = FXCollections.observableArrayList();
-    private ObservableList<Appointment> upcomingAppointmentsList = FXCollections.observableArrayList();
-    private AppointmentDao appointmentDao = new AppointmentDao();
-    private EditAppointmentScreenController editAppointmentScreenController;
-    private ObservableList<Object> objects = appointmentDao.getAllRecords();
-    private CustomerDao customerDao = new CustomerDao();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a zzz");
-    private ZonedDateTime nowZdt = ZonedDateTime.now().withZoneSameInstant(ZoneId.systemDefault());
+    private final LocalDateTime today = LocalDateTime.now();
+    private final ObservableList<Appointment> monthAppointmentsList = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> weekAppointmentsList = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> allAppointmentsList = FXCollections.observableArrayList();
+    private final ObservableList<Appointment> upcomingAppointmentsList = FXCollections.observableArrayList();
+    private final AppointmentDao appointmentDao = new AppointmentDao();
+    private final ObservableList<Object> objects = appointmentDao.getAllRecords();
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h:mm a zzz");
+    private final ZonedDateTime nowZdt = ZonedDateTime.now().withZoneSameInstant(ZoneId.systemDefault());
 
 
     @FXML
@@ -125,7 +123,7 @@ public class MainScreenController {
             loader.setLocation(getClass().getResource("/view/EditAppointmentScreen.fxml"));
             loader.load();
 
-            editAppointmentScreenController = loader.getController();
+            EditAppointmentScreenController editAppointmentScreenController = loader.getController();
 
             Appointment selAppt = appointmentsTableView.getSelectionModel().getSelectedItem();
             editAppointmentScreenController.setEditAppointment(selAppt);
@@ -358,12 +356,11 @@ public class MainScreenController {
         LocalDateTime startOfWeek = LocalDateTime.of(1988, 3, 13, 0, 0);
 
         for(Appointment o : objects) {
-            Appointment a = o;
-            LocalDateTime start = a.getStart();
+            LocalDateTime start = o.getStart();
             ZonedDateTime startUTC = start.atZone(ZoneId.of("UTC"));
             ZonedDateTime startSysDef = startUTC.withZoneSameInstant(ZoneId.systemDefault());
             start = startSysDef.toLocalDateTime();
-            a.setStart(start);
+            o.setStart(start);
 
 
             DayOfWeek dayOfWeek = today.getDayOfWeek();
@@ -397,12 +394,12 @@ public class MainScreenController {
                 startOfWeek = today.minusDays(6);
             }
             if (start.isAfter(ChronoLocalDateTime.from(startOfWeek)) && start.isBefore(ChronoLocalDateTime.from(endOfWeek))) {
-                allAppointmentsList.add(a);//weekAppointmentList.add(a);
+                allAppointmentsList.add(o);//weekAppointmentList.add(a);
                 System.out.println("In week");
             }
 
 
-            weekAppointmentsList.add(a);
+            weekAppointmentsList.add(o);
         }
         return weekAppointmentsList;
     }

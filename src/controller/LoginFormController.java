@@ -3,43 +3,53 @@ package controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import model.User;
 import utils.DBConnection;
 import utils.DBQuery;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 
 /**
  * The controller for the login screen.
  */
-public class LoginFormController {
+public class LoginFormController extends Component {
     private final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private User user = new User(0,"username", "password", timestamp, "me", timestamp, "me");
-    private String frenchNoUser = "Le nom d'utilisateur n'existe pas";
-    private String frenchWrongLogin = "ID utilisateur ou mot de passe incorrect";
     private String displayLanguage;
     private String inputUserName;
     private String inputPassword;
 
-
-    public String getInputUserName() {
+/*
+  public String getInputUserName() {
         return inputUserName;
     }
-
-    public void setInputUserName(String inputUserName) {
-        this.inputUserName = inputUserName;
-    }
-
     public String getInputPassword() {
         return inputPassword;
     }
 
+ */
+
+    /**
+     * Sets the input username variable from the text input in the username text field.
+     * @param inputUserName The text from the username text field.
+     */
+    public void setInputUserName(String inputUserName) {
+        this.inputUserName = inputUserName;
+    }
+
+    /**
+     * Sets the input password variable from the text input in the password field.
+     * @param inputPassword The text from the password text field.
+     */
     public void setInputPassword(String inputPassword) {
         this.inputPassword = inputPassword;
     }
@@ -62,6 +72,12 @@ public class LoginFormController {
     @FXML
     private Label locationLbl;
 
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Button exitButton;
+
     /**
      * Sets the current location and time zone. The location determines what language to display
      */
@@ -80,6 +96,8 @@ public class LoginFormController {
             passwordLbl.setText("le mot de passe");
             userIDLbl.setText("Nom d'utilisateur");
             titleLbl.setText("Planification de la connexion à l'application");
+            loginButton.setText("connexion");
+            exitButton.setText("sortir");
         }
 
     }
@@ -118,14 +136,37 @@ public class LoginFormController {
 
         //Check if username is in database
         if (!rs.next()) {
-            Alert alert;
-            if(displayLanguage.equals("French")){
-                alert = new Alert(Alert.AlertType.CONFIRMATION, frenchNoUser);
+            //Alert alert;
+            if(displayLanguage.equals("français")){
+                //String frenchNoUser = "Le nom d'utilisateur n'existe pas";
+                //alert = new Alert(Alert.AlertType.CONFIRMATION, frenchNoUser);
+
+                Object[] choices = {"d'accord"};
+                Object defaultChoice = choices[0];
+                String frenchNoUser = "Le nom d'utilisateur n'existe pas";
+                JOptionPane.showOptionDialog(this,
+                        frenchNoUser,
+                        "avertissement",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        choices,
+                        defaultChoice);
             }else {
                 LoginTracker("failure");
-                alert = new Alert(Alert.AlertType.CONFIRMATION, "Username does not exist");
+                //alert = new Alert(Alert.AlertType.CONFIRMATION, "Username does not exist");
+                Object[] choices = {"OK"};
+                Object defaultChoice = choices[0];
+                JOptionPane.showOptionDialog(this,
+                        "Username does not exist",
+                        "Warning",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        choices,
+                        defaultChoice);
             }
-            alert.showAndWait();
+            //alert.showAndWait();
         } else {
             //Get username and password from database
             int userID = rs.getInt("User_ID");
@@ -140,19 +181,42 @@ public class LoginFormController {
 
             //Check if input password matches user's password
             if (inputPassword.equals(realPassword)) {
-                user = new User(userID, realUserName, realPassword, createDate, createdBy, lastUpdate, lastUpdatedBy);
+                User user = new User(userID, realUserName, realPassword, createDate, createdBy, lastUpdate, lastUpdatedBy);
                 user.setCurrentUser(user);
                 LoginTracker("successful");
                 Navigation.toMainScreen(event);
             } else {
                 LoginTracker("failure");
-                Alert alert;
-                if(displayLanguage.equals("French")){
-                    alert = new Alert(Alert.AlertType.CONFIRMATION, frenchWrongLogin);
+                //Alert alert;
+                if(displayLanguage.equals("français")){
+                    //String frenchWrongLogin = "ID utilisateur ou mot de passe incorrect";
+                    //alert = new Alert(Alert.AlertType.CONFIRMATION, frenchWrongLogin);
+                    Object[] choices = {"d'accord"};
+                    Object defaultChoice = choices[0];
+                    String frenchWrongLogin = "ID utilisateur ou mot de passe incorrect";
+                    JOptionPane.showOptionDialog(this,
+                            frenchWrongLogin,
+                            "avertissement",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            choices,
+                            defaultChoice);
+
                 }else {
-                    alert = new Alert(Alert.AlertType.CONFIRMATION, "Incorrect userID or password");
+                    //alert = new Alert(Alert.AlertType.CONFIRMATION, "Incorrect userID or password");
+                    Object[] choices = {"OK"};
+                    Object defaultChoice = choices[0];
+                    JOptionPane.showOptionDialog(this,
+                            "Incorrect userID or password",
+                            "Warning",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            choices,
+                            defaultChoice);
                 }
-                alert.showAndWait();
+                //alert.showAndWait();
             }
         }
 
@@ -166,27 +230,6 @@ public class LoginFormController {
         outputFile.println(inputUserName + ", " + inputPassword + ", " + timestamp + ", " + success);
         outputFile.close();
 
-        /*
-        //filename and item variables
-        String fileName = "groceries.txt", item;
-
-        //Create filewriter object
-        FileWriter fileWriter = new FileWriter(fileName, true);
-
-        //Create and open file
-        PrintWriter outputFile = new PrintWriter(fileWriter);
-
-        //Get items and write to file
-        for(int i = 0; i < numItems; i++){
-            System.out.print("Enter item " + (i+1));
-            item = keyboard.nextLine();
-            outputFile.println(item);
-        }
-
-        //Close file
-        outputFile.close();
-        System.out.println("File written. ");
-         */
     }
 
 }

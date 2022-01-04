@@ -109,6 +109,7 @@ public class CustomersScreenController {
 
     /**
      * Sets the table of customers when the screen is opened.
+     * LAMBDA EXPRESSION: The lambda expression is easy to write and read and utilizes the multi-core cpu.
      */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {

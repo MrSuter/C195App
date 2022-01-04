@@ -184,7 +184,6 @@ public class AddAppointmentScreenController {
      */
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() throws SQLException {
-        localZone = ZoneId.systemDefault();
 
         int startHour = 1;
         int endHour = 12;
